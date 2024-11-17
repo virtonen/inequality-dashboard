@@ -101,24 +101,61 @@ def null_perc(df) :
 # Draw the actual page
 
 # Set the title that appears at the top of the page.
-'''
+st.markdown(r"""
 # :earth_americas: World Inequality Dashboard
+            
+## Gini Coefficient
 
-Browse GINI data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2023 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
+The **Gini coefficient** is a measure of statistical dispersion intended to represent
+the income inequality or wealth inequality within a nation or a social group.
+It is the most commonly used measure of inequality. A Gini coefficient of 0
+represents perfect equality, where everyone has the same income, while a Gini
+coefficient of 100 implies perfect inequality, where one person has all the income
+and everyone else has none.
+
+## Relation to the Lorenz Curve
+The Gini coefficient is derived from the [Lorenz curve](https://en.wikipedia.org/wiki/Lorenz_curve),
+which graphically represents the distribution of income or wealth within a population.
+The Gini coefficient is defined as the ratio of the area between the Lorenz curve and the line of equality
+to the total area under the line of equality.
+
+## Calculation Formula
+
+The Gini coefficient ($G$) can be calculated using the following formula:
+
+$$
+G = \frac{A}{A + B}
+$$
+
+where:
+- A is the area between the line of equality and the Lorenz curve.
+- B is the area under the Lorenz curve.
+
+Alternatively, it can be calculated using the formula:
+
+$$
+G = \frac{1}{n^2 \mu} \sum_{i=1}^{n} \sum_{j=1}^{n} |x_i - x_j|
+$$
+
+where:
+- n is the number of observations.
+- $\mu$ is the mean of the distribution.
+- $x_i$ and $x_j$ are individual values.
+
+This dashboard reads Gini coefficient data from a CSV file obtained from the [World Bank Open Data](https://data.worldbank.org/),
+which contains Gini coefficients for various countries over a range of years.
+""")
 
 # Add some spacing
 ''
 ''
 
 # data 
-st.subheader("Data : ")
+st.subheader("Data: ")
 st.write(gini_df)
 
 # null values 
-st.subheader("Null values : ")
+st.subheader("Null values: ")
 st.write(null_perc(gini_df) )
 
 min_value = gini_df['Year'].min()
