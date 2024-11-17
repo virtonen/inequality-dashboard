@@ -250,5 +250,3 @@ poverty_chart = alt.Chart(filtered_poverty_df).mark_line().encode(
 )
 
 st.altair_chart(poverty_chart, use_container_width=True)
-
-
