@@ -167,7 +167,7 @@ from_year, to_year = st.slider(
     max_value=max_value,
     value=[min_value, max_value])
 
-countries = gini_df['Country Code'].unique()
+countries = gini_df['Country Name'].unique()
 
 if not len(countries):
     st.warning("Select at least one country")
@@ -175,7 +175,7 @@ if not len(countries):
 selected_countries = st.multiselect(
     'Which countries would you like to view?',
     countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
+    ['Germany', 'Brazil', 'Norway', 'South Africa', 'Australia', 'China'])
 
 ''
 ''
@@ -183,7 +183,7 @@ selected_countries = st.multiselect(
 
 # Filter the data
 filtered_gini_df = gini_df[
-    (gini_df['Country Code'].isin(selected_countries))
+    (gini_df['Country Name'].isin(selected_countries))
     & (gini_df['Year'] <= to_year)
     & (from_year <= gini_df['Year'])
 ]
@@ -196,7 +196,7 @@ st.line_chart(
     filtered_gini_df,
     x='Year',
     y='GINI',
-    color='Country Code',
+    color='Country Name',
 )
 
 ''
@@ -210,6 +210,11 @@ st.header(f'Gini in {to_year}', divider='gray')
 
 ''
 
+st.markdown("""
+**Explanation:**  
+The metrics below display the Gini coefficients for the selected countries in the chosen year. Each metric shows the current Gini value and the change from the first year in the selected range, indicating whether inequality has increased or decreased.
+""")
+
 cols = st.columns(4)
 
 for i, country in enumerate(selected_countries):
@@ -217,8 +222,8 @@ for i, country in enumerate(selected_countries):
 
     with col:
         # Get Gini values for the selected country
-        first_gini = first_year[first_year['Country Code'] == country]['GINI'].iat[0] if not first_year[first_year['Country Code'] == country].empty else None
-        last_gini = last_year[last_year['Country Code'] == country]['GINI'].iat[0] if not last_year[last_year['Country Code'] == country].empty else None
+        first_gini = first_year[first_year['Country Name'] == country]['GINI'].iat[0] if not first_year[first_year['Country Name'] == country].empty else None
+        last_gini = last_year[last_year['Country Name'] == country]['GINI'].iat[0] if not last_year[last_year['Country Name'] == country].empty else None
 
         # Handle missing values
         if first_gini is None or math.isnan(first_gini) or last_gini is None or math.isnan(last_gini):
