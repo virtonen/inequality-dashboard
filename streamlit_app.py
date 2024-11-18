@@ -111,7 +111,8 @@ the income inequality or wealth inequality within a nation or a social group.
 It is the most commonly used measure of inequality. A Gini coefficient of 0
 represents perfect equality, where everyone has the same income, while a Gini
 coefficient of 100 implies perfect inequality, where one person has all the income
-and everyone else has none.
+and everyone else has none. Most countries have Gini coefficients between 25-60, 
+with lower values indicating more equality and higher values indicating more inequality.
 
 ## Relation to the Lorenz Curve
 The Gini coefficient is derived from the [Lorenz curve](https://en.wikipedia.org/wiki/Lorenz_curve),
