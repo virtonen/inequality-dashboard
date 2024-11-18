@@ -1,7 +1,5 @@
 # :earth_americas: Global Inequality dashboard template
-A simple Streamlit app showing the Gini, Poverty Ratio, and other metrics of different countries in the world.
-
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://gdp-dashboard-template.streamlit.app/)
+A simple Streamlit app showing the Gini, Poverty Ratio, and other inequality metrics of different countries in the world.
 
 ### How to run it on your own machine
 
@@ -14,5 +12,5 @@ A simple Streamlit app showing the Gini, Poverty Ratio, and other metrics of dif
 2. Run the app
 
    ```
-   $ streamlit run inequality-dashboard.py
+   $ streamlit run /your-pathname/inequality-dashboard.py
    ```
