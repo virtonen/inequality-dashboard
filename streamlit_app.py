@@ -111,13 +111,19 @@ the income inequality or wealth inequality within a nation or a social group.
 It is the most commonly used measure of inequality. A Gini coefficient of 0
 represents perfect equality, where everyone has the same income, while a Gini
 coefficient of 100 implies perfect inequality, where one person has all the income
-and everyone else has none.
+and everyone else has none. Most countries have Gini coefficients between 25-60, with lower values indicating more equality and higher values indicating more inequality.
 
 ## Relation to the Lorenz Curve
 The Gini coefficient is derived from the [Lorenz curve](https://en.wikipedia.org/wiki/Lorenz_curve),
 which graphically represents the distribution of income or wealth within a population.
 The Gini coefficient is defined as the ratio of the area between the Lorenz curve and the line of equality
-to the total area under the line of equality.
+to the total area under the line of equality. This gives a numerical value that summarizes the degree of income inequality.
+
+## Limitations of the Gini Coefficient
+While the Gini coefficient is a powerful tool for measuring inequality, it is not without its limitations. Understanding these limitations is important for interpreting the data accurately and comprehensively:
+- **Absolute Wealth or Income Levels**: It does not account for the overall level of income or wealth in a country. Two countries with vastly different economic conditions can have the same Gini coefficient, despite significant differences in living standards.
+- **Population Size**: It also does not consider the size of a population. Larger populations with diverse demographics might require additional metrics to fully capture inequality.
+- **Regional Disparities**: It represents inequality at a national level but does not reflect disparities within regions or communities. For example, rural and urban areas might have vastly different income distributions.
 
 ## Calculation Formula
 
@@ -142,8 +148,8 @@ where:
 - $\mu$ is the mean of the distribution.
 - $x_i$ and $x_j$ are individual values.
 
-This dashboard reads Gini coefficient data from a CSV file obtained from the [World Bank Open Data](https://data.worldbank.org/),
-which contains Gini coefficients for various countries over a range of years.
+The Gini coefficient gives a succinct, easy-to-understand metric for comparing levels of income inequality between different countries or time periods. It's an important tool for economists, policymakers, and the public to assess the fairness and distribution of economic resources within a society.
+This dashboard sources Gini coefficient data from the [World Bank Open Data](https://data.worldbank.org/), which compiles this statistic for many countries over multiple years. The data allows users to easily visualize and compare income inequality levels around the world.
 """)
 
 # Add some spacing
@@ -255,6 +261,16 @@ st.markdown("""
 - **Source**: World Bank, Poverty and Inequality Platform.
 - **Indicator**: Poverty headcount ratio at $2.15 a day (2017 PPP).
 - **Description**: Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. High-income economies' data are primarily from the Luxembourg Income Study database. More info at [pip.worldbank.org](https://pip.worldbank.org).
+
+#### Absolute Poverty
+The absolute poverty headcount ratio measures the percentage of a country's population living below the international poverty line, currently set at $1.90 per day. This metric provides insight into the level of extreme income poverty within a country.
+
+#### Absolute vs Relative Poverty
+Absolute poverty refers to a lack of access to the basic necessities for human survival, such as adequate food, clean water, sanitation, health care, and shelter. The absolute poverty headcount ratio measures the percentage of a population living below an established poverty line, currently set at $1.90 per day by the World Bank. This provides insight into the level of extreme income deprivation within a country.
+
+Relative poverty, on the other hand, is a measure of income inequality. The Gini coefficient is a commonly used metric for relative poverty, as it shows how income or wealth is distributed across a population. A high Gini indicates greater inequality, even if most people are above the absolute poverty line. Relative poverty compares an individual's or household's income to the overall distribution, rather than against a fixed poverty threshold.
+
+In contrast, the Gini coefficient is a measure of relative income inequality, showing how income/wealth is distributed across a population. A high Gini indicates greater inequality but does not necessarily mean high levels of absolute poverty. Analyzing both absolute poverty and relative inequality can provide a more complete picture of a country's socioeconomic conditions.
 """)
 
 # Filter years and countries for poverty data
