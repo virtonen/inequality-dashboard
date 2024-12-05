@@ -97,13 +97,18 @@ def null_perc(df) :
 
 
 
+
 # -----------------------------------------------------------------------------
 # Draw the actual page
 
 # Set the title that appears at the top of the page.
 st.markdown(r"""
 # :earth_americas: World Inequality Dashboard
-            
+
+## Table of Contents
+- [Gini Coefficient](#gini-coefficient)
+- [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
+
 ## Gini Coefficient
 
 The **Gini coefficient** is a measure of statistical dispersion intended to represent
@@ -181,7 +186,7 @@ if not len(countries):
 selected_countries = st.multiselect(
     'Which countries would you like to view?',
     countries,
-    ['Germany', 'Brazil', 'Norway', 'South Africa', 'Australia', 'China'])
+    ['Germany', 'Brazil', 'Norway', 'South Africa', 'United States', 'Estonia'])
 
 ''
 ''
@@ -198,16 +203,19 @@ st.header('Gini over time', divider='gray')
 
 ''
 
-st.line_chart(
-    filtered_gini_df,
-    x='Year',
-    y='GINI',
-    color='Country Name',
+gini_chart = alt.Chart(filtered_gini_df).mark_line().encode(
+    x=alt.X('Year:O', title='Year', axis=alt.Axis(format='d')),  # No commas in Year
+    y=alt.Y('GINI', title='GINI'),
+    color='Country Name:N',  # Use Country Name for legend
+    tooltip=['Country Name', 'Year', 'GINI']
+).properties(
+    title='Gini Coefficient over Time'
 )
 
-''
-''
+st.altair_chart(gini_chart, use_container_width=True)
 
+''
+''
 
 first_year = gini_df[gini_df['Year'] == from_year]
 last_year = gini_df[gini_df['Year'] == to_year]
@@ -279,9 +287,9 @@ poverty_max_year = poverty_df['Year'].max()
 
 poverty_from_year, poverty_to_year = st.slider(
     'Which years are you interested in for poverty data?',
-    min_value=poverty_min_year,
-    max_value=poverty_max_year,
-    value=[poverty_min_year, poverty_max_year]
+    min_value=int(poverty_min_year),
+    max_value=int(poverty_max_year),
+    value=[int(poverty_min_year), int(poverty_max_year)]
 )
 
 poverty_countries = poverty_df['Country Name'].unique()
@@ -308,3 +316,4 @@ poverty_chart = alt.Chart(filtered_poverty_df).mark_line().encode(
 )
 
 st.altair_chart(poverty_chart, use_container_width=True)
+
