@@ -112,7 +112,7 @@ It is the most commonly used measure of inequality. A Gini coefficient of 0
 represents perfect equality, where everyone has the same income, while a Gini
 coefficient of 100 implies perfect inequality, where one person has all the income
 and everyone else has none. Most countries have Gini coefficients between 25-60, 
-with lower values indicating more equality and higher values indicating more inequality...
+with lower values indicating more equality and higher values indicating more inequality.
 
 ## Relation to the Lorenz Curve
 The Gini coefficient is derived from the [Lorenz curve](https://en.wikipedia.org/wiki/Lorenz_curve),
@@ -293,3 +293,80 @@ poverty_chart = alt.Chart(filtered_poverty_df).mark_line().encode(
 )
 
 st.altair_chart(poverty_chart, use_container_width=True)
+
+# -----------------------------------------------------------------------------
+
+st.header('GDP Comparison', divider='gray')
+
+st.markdown("""
+Some insigths about GDP data""")
+
+# GDP DATA
+def get_gdp_deflator_data():
+    """Grab GDP deflator data from the world_bank_popular_indicators dataset."""
+    DATA_FILENAME = Path(__file__).parent/'data/world_bank_popular_indicators.csv'
+    raw_gdp_deflator_df = pd.read_csv(DATA_FILENAME)
+
+    MIN_YEAR = 2000
+    MAX_YEAR = 2015
+
+    # Filter the dataset for the specific Series Code
+    gdp_deflator_df = raw_gdp_deflator_df[raw_gdp_deflator_df['Series Code'] == 'NY.GDP.DEFL.KD.ZG']
+
+    # Melt the dataset into long format
+    gdp_deflator_df = gdp_deflator_df.melt(
+        id_vars=['Country Name', 'Country Code', 'Series Name', 'Series Code'],
+        var_name='Year',
+        value_name='GDP Deflator'
+    )
+
+    # Convert Year to numeric and drop rows with missing GDP Deflator values
+    gdp_deflator_df['Year'] = gdp_deflator_df['Year'].str.extract('(\d{4})').astype(float)
+    gdp_deflator_df = gdp_deflator_df.dropna(subset=['GDP Deflator'])
+
+    return gdp_deflator_df
+
+gdp_deflator_df = get_gdp_deflator_data()
+
+# Show first 5 rows (default)
+gdp_deflator_df.head()
+
+# Show specific number of rows (e.g., first 10 rows)
+print(gdp_deflator_df.head(300))
+
+# Filter years and countries for GDP deflator data
+gdp_min_year = gdp_deflator_df['Year'].min()
+gdp_max_year = gdp_deflator_df['Year'].max()
+
+gdp_from_year, gdp_to_year = st.slider(
+    'Which years are you interested in for GDP deflator data?',
+    min_value=gdp_min_year,
+    max_value=gdp_max_year,
+    value=[gdp_min_year, gdp_max_year]
+)
+
+gdp_countries = gdp_deflator_df['Country Name'].unique()
+selected_gdp_countries = st.multiselect(
+    'Which countries would you like to view for GDP deflator data?',
+    gdp_countries,
+    ['United States', 'China', 'India']  # Add any defaults you prefer
+)
+
+# Filter the GDP Deflator Data
+filtered_gdp_deflator_df = gdp_deflator_df[
+    (gdp_deflator_df['Country Name'].isin(selected_gdp_countries))
+    & (gdp_deflator_df['Year'] <= gdp_to_year)
+    & (gdp_deflator_df['Year'] >= gdp_from_year)
+]
+
+gdp_deflator_chart = alt.Chart(filtered_gdp_deflator_df).mark_line().encode(
+    x=alt.X('Year:O', title='Year'),
+    y=alt.Y('GDP Deflator', 
+            title='GDP Deflator (%)',
+            axis=alt.Axis(format='.2f')),  # Format specified in axis
+    color='Country Name:N',
+    tooltip=['Country Name', 'Year', 'GDP Deflator']
+).properties(
+    title='GDP Deflator over time'
+)
+st.altair_chart(gdp_deflator_chart, use_container_width=True)
