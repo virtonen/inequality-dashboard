@@ -12,5 +12,5 @@ A simple Streamlit app showing the Gini, Poverty Ratio, and other inequality met
 2. Run the app
 
    ```
-   $ streamlit run /your-pathname/inequality-dashboard.py
+   $ streamlit run streamlit_app.py
    ```
