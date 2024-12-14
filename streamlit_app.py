@@ -307,8 +307,8 @@ def get_gdp_deflator_data():
     DATA_FILENAME = Path(__file__).parent/'data/world_bank_popular_indicators.csv'
     raw_gdp_deflator_df = pd.read_csv(DATA_FILENAME)
 
-    MIN_YEAR = 2000
-    MAX_YEAR = 2015
+    #MIN_YEAR = 2000
+    #MAX_YEAR = 2015
 
     # Filter the dataset for the specific Series Code
     gdp_deflator_df = raw_gdp_deflator_df[raw_gdp_deflator_df['Series Code'] == 'NY.GDP.DEFL.KD.ZG']
@@ -338,11 +338,18 @@ print(gdp_deflator_df.head(300))
 gdp_min_year = gdp_deflator_df['Year'].min()
 gdp_max_year = gdp_deflator_df['Year'].max()
 
+#gdp_from_year, gdp_to_year = st.slider(
+#    'Which years are you interested in for GDP deflator data?',
+#    min_value=gdp_min_year,
+#    max_value=gdp_max_year,
+#    value=[gdp_min_year, gdp_max_year]
+#)
 gdp_from_year, gdp_to_year = st.slider(
     'Which years are you interested in for GDP deflator data?',
-    min_value=gdp_min_year,
-    max_value=gdp_max_year,
-    value=[gdp_min_year, gdp_max_year]
+    min_value=int(gdp_min_year),  # Convert to integer
+    max_value=int(gdp_max_year),  # Convert to integer
+    value=[int(gdp_min_year), int(gdp_max_year)],  # Convert default range to integers
+    step=1  # Ensure step is an integer
 )
 
 gdp_countries = gdp_deflator_df['Country Name'].unique()
@@ -359,11 +366,12 @@ filtered_gdp_deflator_df = gdp_deflator_df[
     & (gdp_deflator_df['Year'] >= gdp_from_year)
 ]
 
+
 gdp_deflator_chart = alt.Chart(filtered_gdp_deflator_df).mark_line().encode(
     x=alt.X('Year:O', title='Year'),
-    y=alt.Y('GDP Deflator', 
+    y=alt.Y('GDP Deflator:Q',  # Treat GDP Deflator as quantitative
             title='GDP Deflator (%)',
-            axis=alt.Axis(format='.2f')),  # Format specified in axis
+            axis=alt.Axis(format='.2f')),  # Ensure numerical formatting
     color='Country Name:N',
     tooltip=['Country Name', 'Year', 'GDP Deflator']
 ).properties(
