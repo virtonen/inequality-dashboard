@@ -378,3 +378,77 @@ gdp_deflator_chart = alt.Chart(filtered_gdp_deflator_df).mark_line().encode(
     title='GDP Deflator over time'
 )
 st.altair_chart(gdp_deflator_chart, use_container_width=True)
+
+# -----------------------------------------------------------------------------
+
+import streamlit as st
+import pandas as pd
+import plotly.graph_objects as go
+
+# Load the GDP deflator data
+gdp_deflator_df = filtered_gdp_deflator_df  # Ensure this is already pre-filtered as needed
+
+# Get the unique years and countries in the data
+years = gdp_deflator_df['Year'].unique()
+countries = sorted(gdp_deflator_df['Country Name'].unique())  # Sort countries alphabetically for clarity
+
+# Allow the user to select the year
+selected_year = st.slider(
+    'Select the year',
+    min_value=int(years.min()),
+    max_value=int(years.max()),
+    value=int(years.max())
+)
+
+# Checkbox to select all or none of the countries
+select_all = st.checkbox('Select all countries', value=False)
+
+# Multiselect widget for countries
+if select_all:
+    selected_countries = countries  # If the checkbox is checked, select all countries
+else:
+    selected_countries = st.multiselect(
+        'Select the countries',
+        options=countries,  # Dynamically populate from dataset
+        default=[]  # Start with no countries selected when checkbox is unchecked
+    )
+
+# Filter the data for the selected year and countries
+gdp_deflator_year_df = gdp_deflator_df[
+    (gdp_deflator_df['Year'] == selected_year) &
+    (gdp_deflator_df['Country Name'].isin(selected_countries))
+]
+
+# Create the choropleth map
+world_map = go.Figure(data=go.Choropleth(
+    locations=gdp_deflator_year_df['Country Code'],
+    z=gdp_deflator_year_df['GDP Deflator'],
+    text=gdp_deflator_year_df['Country Name'],  # Add country name to tooltips
+    colorscale='Viridis',
+    autocolorscale=False,
+    reversescale=True,
+    marker_line_color='darkgray',
+    marker_line_width=0.5,
+    colorbar_title="GDP Deflator (%)"
+))
+
+# Update the layout for the map
+world_map.update_layout(
+    title_text=f'GDP Deflator in {selected_year}',
+    geo=dict(
+        showframe=False,
+        showcoastlines=False,
+        projection_type='equirectangular'
+    ),
+    annotations=[dict(
+        x=0.55,
+        y=0.1,
+        xref='paper',
+        yref='paper',
+        text='Source: World Inequality Database',
+        showarrow=False
+    )]
+)
+
+# Display the map in the Streamlit app
+st.plotly_chart(world_map, use_container_width=True)
