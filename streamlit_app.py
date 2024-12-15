@@ -53,30 +53,6 @@ if st.session_state.page == "Home":
     - [Gini Coefficient](#gini-coefficient)
     - [Poverty Headcount Ratio](#poverty-headcount-ratio-over-time)
     """)
-        # Data Sections: GDP, Gini, and Poverty Ratio
-    st.header('GDP Comparison', divider='gray')
-    st.markdown("Some insights about GDP data")
-    st.write("**[Insert GDP Comparison Data and Chart here.]**")
-
-    st.header('Gini Coefficient', divider='gray')
-    st.markdown("Some insights about Gini Coefficient data")
-    st.write("**[Insert Gini Coefficient Data and Chart here.]**")
-
-    st.header('Poverty Headcount Ratio', divider='gray')
-    st.markdown("Some insights about Poverty Headcount Ratio data")
-    st.write("**[Insert Poverty Headcount Ratio Data and Chart here.]**")
-
-elif st.session_state.page == "About Project":
-    # Call About Project Page Content
-    show_about_project()
-
-elif st.session_state.page == "About Us":
-    # Call About Us Page Content
-    show_about_us()
-
-elif st.session_state.page == "Who is This For?":
-    # Call Who is This For Page Content
-    show_who_is_this_for()
 
 # -----------------------------------------------------------------------------
 # GINI DATA
@@ -515,3 +491,16 @@ poverty_chart = alt.Chart(filtered_poverty_df).mark_line().encode(
 )
 
 st.altair_chart(poverty_chart, use_container_width=True)
+
+
+elif st.session_state.page == "About Project":
+    # Call About Project Page Content
+    show_about_project()
+
+elif st.session_state.page == "About Us":
+    # Call About Us Page Content
+    show_about_us()
+
+elif st.session_state.page == "Who is This For?":
+    # Call Who is This For Page Content
+    show_who_is_this_for()
