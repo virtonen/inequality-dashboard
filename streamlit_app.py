@@ -11,6 +11,51 @@ st.set_page_config(
 )
 
 # -----------------------------------------------------------------------------
+# LANDING PAGE BUTTONS
+from navigate.home import show_home
+from navigate.about_project import show_about_project
+from navigate.about_us import show_about_us
+from navigate.who_is_this_for import show_who_is_this_for
+
+# Custom navigation with buttons
+def main():
+    st.set_page_config(
+        page_title="World Inequality Dashboard",
+        layout="wide"
+    )
+    
+    # Button-based navigation layout
+    st.markdown("<h1 style='text-align: center;'>World Inequality Dashboard</h1>", unsafe_allow_html=True)
+    col1, col2, col3, col4 = st.columns(4)
+
+    # Initialize session state for page
+    if "page" not in st.session_state:
+        st.session_state.page = "Home"
+
+    # Button navigation
+    if col1.button("🏠 Home"):
+        st.session_state.page = "Home"
+    if col2.button("🔍 About Project"):
+        st.session_state.page = "About Project"
+    if col3.button("📖 About Us"):
+        st.session_state.page = "About Us"
+    if col4.button("👥 Who is This For?"):
+        st.session_state.page = "Who is This For?"
+
+    # Render the selected page
+    if st.session_state.page == "Home":
+        show_home()
+    elif st.session_state.page == "About Project":
+        show_about_project()
+    elif st.session_state.page == "About Us":
+        show_about_us()
+    elif st.session_state.page == "Who is This For?":
+        show_who_is_this_for()
+
+if __name__ == "__main__":
+    main()
+
+# -----------------------------------------------------------------------------
 # GINI DATA
 # Declare some useful functions.
 
