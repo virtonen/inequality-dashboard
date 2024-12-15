@@ -52,7 +52,7 @@ if st.session_state.page == "Home":
         ## Table of Contents
         - [GDP Comparison](#gdp-comparison)
         - [Gini Coefficient](#gini-coefficient)""")
-        - [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
+        - [Poverty Headcount Ratio](#poverty-headcount-ratio-over-time)
         """)
 
 # -----------------------------------------------------------------------------
