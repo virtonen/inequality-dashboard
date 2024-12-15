@@ -54,6 +54,18 @@ if st.session_state.page == "Home":
     - [Poverty Headcount Ratio](#poverty-headcount-ratio-over-time)
     """)
 
+elif st.session_state.page == "About Project":
+    # Call About Project Page Content
+    show_about_project()
+
+elif st.session_state.page == "About Us":
+    # Call About Us Page Content
+    show_about_us()
+
+elif st.session_state.page == "Who is This For?":
+    # Call Who is This For Page Content
+    show_who_is_this_for()
+
 # -----------------------------------------------------------------------------
 # GINI DATA
 # Declare some useful functions.
@@ -491,16 +503,3 @@ poverty_chart = alt.Chart(filtered_poverty_df).mark_line().encode(
 )
 
 st.altair_chart(poverty_chart, use_container_width=True)
-
-
-elif st.session_state.page == "About Project":
-    # Call About Project Page Content
-    show_about_project()
-
-elif st.session_state.page == "About Us":
-    # Call About Us Page Content
-    show_about_us()
-
-elif st.session_state.page == "Who is This For?":
-    # Call Who is This For Page Content
-    show_who_is_this_for()
