@@ -21,10 +21,6 @@ if "page" not in st.session_state:
 
 # Main navigation function
 def main():  
-    # Render title at the top (always visible)
-    st.markdown(
-        "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>", 
-        unsafe_allow_html=True
     )
     
     # Define buttons layout
