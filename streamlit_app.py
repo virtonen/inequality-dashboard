@@ -13,7 +13,6 @@ st.set_page_config(
 # Title at the top
 if "page" not in st.session_state:
     st.session_state.page = "Home"  # Default page
-)
 
 # Welcome text as a single sentence
 st.markdown("""
