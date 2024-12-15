@@ -12,6 +12,7 @@ st.set_page_config(
 )
 
 # Title at the top
+if st.session_state.page == "Home":
 st.markdown(
     "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>",
     unsafe_allow_html=True
@@ -59,8 +60,6 @@ def main():
         st.session_state.page = "Who is This For?"
 
     # Render the selected page
-    if st.session_state.page == "Home":
-        show_home()
     elif st.session_state.page == "About Project":
         show_about_project()
     elif st.session_state.page == "About Us":
