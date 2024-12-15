@@ -21,7 +21,6 @@ if "page" not in st.session_state:
 
 # Main navigation function
 def main():  
-    )
     
     # Define buttons layout
     col1, col2, col3, col4 = st.columns(4)
