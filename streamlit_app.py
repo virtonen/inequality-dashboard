@@ -8,8 +8,6 @@ from navigation.about_project import show_about_project
 from navigation.about_us import show_about_us
 from navigation.who_is_this_for import show_who_is_this_for
 
-import streamlit as st
-
 # Set the page configuration
 st.set_page_config(
     page_title="World Inequality Dashboard",
@@ -67,12 +65,6 @@ elif st.session_state.page == "About Us":
 elif st.session_state.page == "Who is This For?":
     # Call Who is This For Page Content
     show_who_is_this_for()
-st.markdown("""
-## Table of Contents
-- [GDP Comparison](#gdp-comparison)
-- [Gini Coefficient](#gini-coefficient)
-- [Poverty Headcount Ratio](#poverty-headcount-ratio-over-time)
-""")
 
 # -----------------------------------------------------------------------------
 # GINI DATA
