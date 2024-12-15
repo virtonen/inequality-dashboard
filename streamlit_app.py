@@ -42,7 +42,7 @@ if "page" not in st.session_state:
 show_navigation_buttons()
 
     # Render content based on selected page
-    if st.session_state.page == "Home":
+if st.session_state.page == "Home":
         st.markdown("""
         ### Welcome!  
         Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
