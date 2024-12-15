@@ -4,12 +4,32 @@ import math
 import altair as alt
 from pathlib import Path
 
-# Set the title and favicon that appear in the Browser's tab bar.
+# Set the title and favicon that appear in the Browser's tab bar
 st.set_page_config(
     page_title='World Inequality Dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
+    page_icon=':earth_americas:',  # This is an emoji shortcode. Could be a URL too.
     layout="wide"
 )
+
+# Title at the top
+st.markdown(
+    "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>",
+    unsafe_allow_html=True
+)
+
+# Welcome text as a single sentence
+st.markdown("""
+### Welcome!  
+Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
+""")
+
+# Table of Contents
+st.markdown("""
+## Table of Contents
+- [GDP Comparison](#gdp-comparison)
+- [Gini Coefficient](#gini-coefficient)
+- [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
+""")
 
 # -----------------------------------------------------------------------------
 # LANDING PAGE BUTTONS
@@ -21,9 +41,7 @@ from navigation.who_is_this_for import show_who_is_this_for
 # Custom navigation with buttons
 def main():  
     # Button-based navigation layout
-    st.markdown("<h1 style='text-align: center;'>World Inequality Dashboard</h1>", unsafe_allow_html=True)
-    col1, col2, col3, col4 = st.columns(4)
-
+   
     # Initialize session state for page
     if "page" not in st.session_state:
         st.session_state.page = "Home"
