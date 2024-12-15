@@ -45,7 +45,10 @@ def main():
     # Initialize session state for page
     if "page" not in st.session_state:
         st.session_state.page = "Home"
-
+        
+ # Define the columns for button layout
+    col1, col2, col3, col4 = st.columns(4)
+    
     # Button navigation
     if col1.button("🏠 Home"):
         st.session_state.page = "Home"
