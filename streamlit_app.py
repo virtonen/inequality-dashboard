@@ -143,7 +143,7 @@ def main():
         ## Table of Contents
         - [GDP Comparison](#gdp-comparison)
         - [Gini Coefficient](#gini-coefficient)
-     
+     )
 st.header('GDP Comparison', divider='gray')
 st.markdown("""
 Some insigths about GDP data""")
