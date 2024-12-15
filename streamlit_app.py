@@ -9,12 +9,6 @@ from navigation.about_project import show_about_project
 from navigation.about_us import show_about_us
 from navigation.who_is_this_for import show_who_is_this_for
 
-# Set the title and favicon that appear in the Browser's tab bar
-st.set_page_config(
-    page_title='World Inequality Dashboard',
-    page_icon=':earth_americas:',  # This is an emoji shortcode. Could be a URL too.
-)
-
 # Initialize session state for page
 if "page" not in st.session_state:
     st.session_state.page = "Home"  # Default page
@@ -40,22 +34,7 @@ def main():
     if col4.button("👥 Who is This For?"):
         st.session_state.page = "Who is This For?"
     
-    # Render the "Home" page content
-    if st.session_state.page == "Home":
-        # Welcome text and Table of Contents
-        st.markdown("""
-        ### Welcome!  
-        Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
-        """)
-
-        st.markdown("""
-        ## Table of Contents
-        - [GDP Comparison](#gdp-comparison)
-        - [Gini Coefficient](#gini-coefficient)
-        - [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
-        """)
-
-    # Render other pages
+    # Render pages
     elif st.session_state.page == "About Project":
         show_about_project()
     elif st.session_state.page == "About Us":
