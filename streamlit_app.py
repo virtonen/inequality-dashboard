@@ -8,6 +8,7 @@ from pathlib import Path
 st.set_page_config(
     page_title='World Inequality Dashboard',
     page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
+    layout="wide"
 )
 
 # -----------------------------------------------------------------------------
@@ -18,12 +19,7 @@ from navigation.about_us import show_about_us
 from navigation.who_is_this_for import show_who_is_this_for
 
 # Custom navigation with buttons
-def main():
-    st.set_page_config(
-        page_title="World Inequality Dashboard",
-        layout="wide"
-    )
-    
+def main():  
     # Button-based navigation layout
     st.markdown("<h1 style='text-align: center;'>World Inequality Dashboard</h1>", unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns(4)
