@@ -12,10 +12,10 @@ st.set_page_config(
 
 # -----------------------------------------------------------------------------
 # LANDING PAGE BUTTONS
-from navigate.home import show_home
-from navigate.about_project import show_about_project
-from navigate.about_us import show_about_us
-from navigate.who_is_this_for import show_who_is_this_for
+from navigation.home import show_home
+from navigation.about_project import show_about_project
+from navigation.about_us import show_about_us
+from navigation.who_is_this_for import show_who_is_this_for
 
 # Custom navigation with buttons
 def main():
