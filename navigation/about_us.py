@@ -1,8 +1,8 @@
 import streamlit as st
 
-def show_about_project():
-    st.title("🔍 About the Project")
+def show_about_us():
+    st.title("📖 About Us")
     st.write("""
-    This project uses data from the **World Bank** and **World Inequality Lab**  
-    to provide interactive visualizations of global economic trends.
+    We created this dashboard to make economic inequality data accessible,  
+    engaging, and easy to explore for everyone.
     """)
