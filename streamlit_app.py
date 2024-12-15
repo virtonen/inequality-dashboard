@@ -3,6 +3,11 @@ import pandas as pd
 import math
 import altair as alt
 from pathlib import Path
+import streamlit as st
+
+from navigation.about_project import show_about_project
+from navigation.about_us import show_about_us
+from navigation.who_is_this_for import show_who_is_this_for
 
 # Set the title and favicon that appear in the Browser's tab bar
 st.set_page_config(
@@ -10,35 +15,19 @@ st.set_page_config(
     page_icon=':earth_americas:',  # This is an emoji shortcode. Could be a URL too.
 )
 
-# Title at the top
+# Initialize session state for page
 if "page" not in st.session_state:
     st.session_state.page = "Home"  # Default page
 
-# Welcome text as a single sentence
-st.markdown("""
-### Welcome!  
-Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
-""")
-
-# Table of Contents
-st.markdown("""
-## Table of Contents
-- [GDP Comparison](#gdp-comparison)
-- [Gini Coefficient](#gini-coefficient)
-- [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
-""")
-
-# -----------------------------------------------------------------------------
-# LANDING PAGE BUTTONS
-from navigation.about_project import show_about_project
-from navigation.about_us import show_about_us
-from navigation.who_is_this_for import show_who_is_this_for
-
-# Custom navigation with buttons
+# Main navigation function
 def main():  
-    # Button-based navigation layout
-        
- # Define the columns for button layout
+    # Render title at the top (always visible)
+    st.markdown(
+        "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>", 
+        unsafe_allow_html=True
+    )
+    
+    # Define buttons layout
     col1, col2, col3, col4 = st.columns(4)
     
     # Button navigation
@@ -50,8 +39,23 @@ def main():
         st.session_state.page = "About Us"
     if col4.button("👥 Who is This For?"):
         st.session_state.page = "Who is This For?"
+    
+    # Render the "Home" page content
+    if st.session_state.page == "Home":
+        # Welcome text and Table of Contents
+        st.markdown("""
+        ### Welcome!  
+        Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
+        """)
 
-    # Render the selected page
+        st.markdown("""
+        ## Table of Contents
+        - [GDP Comparison](#gdp-comparison)
+        - [Gini Coefficient](#gini-coefficient)
+        - [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
+        """)
+
+    # Render other pages
     elif st.session_state.page == "About Project":
         show_about_project()
     elif st.session_state.page == "About Us":
@@ -61,6 +65,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 # -----------------------------------------------------------------------------
 # GINI DATA
