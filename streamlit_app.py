@@ -8,7 +8,6 @@ from pathlib import Path
 st.set_page_config(
     page_title='World Inequality Dashboard',
     page_icon=':earth_americas:',  # This is an emoji shortcode. Could be a URL too.
-    layout="wide"
 )
 
 # Title at the top
