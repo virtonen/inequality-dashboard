@@ -48,12 +48,12 @@ if st.session_state.page == "Home":
         Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
         """)
 
-        st.markdown("""
-        ## Table of Contents
-        - [GDP Comparison](#gdp-comparison)
-        - [Gini Coefficient](#gini-coefficient)""")
-        - [Poverty Headcount Ratio](#poverty-headcount-ratio-over-time)
-        """)
+st.markdown("""
+## Table of Contents
+- [GDP Comparison](#gdp-comparison)
+- [Gini Coefficient](#gini-coefficient)
+- [Poverty Headcount Ratio](#poverty-headcount-ratio-over-time)
+""")
 
 # -----------------------------------------------------------------------------
 # GINI DATA
