@@ -13,9 +13,9 @@ st.set_page_config(
 
 # Title at the top
 if st.session_state.page == "Home":
-st.markdown(
-    "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>",
-    unsafe_allow_html=True
+    st.markdown(
+        "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>", 
+        unsafe_allow_html=True
 )
 
 # Welcome text as a single sentence
