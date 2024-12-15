@@ -39,14 +39,36 @@ if "page" not in st.session_state:
     st.session_state.page = "Home"
 
 # Show navigation buttons at the top
+show_navigation_buttons()# Show navigation buttons at the top
 show_navigation_buttons()
 
-    # Render content based on selected page
+# Page Navigation Logic
 if st.session_state.page == "Home":
-        st.markdown("""
-        ### Welcome!  
-        Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
-        """)
+    # Render Home Page Content
+    st.markdown("""
+    ### Welcome!  
+    Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
+    """)
+
+    st.markdown("""
+    ## Table of Contents
+    - [GDP Comparison](#gdp-comparison)
+    - [Gini Coefficient](#gini-coefficient)
+    - [Poverty Headcount Ratio](#poverty-headcount-ratio-over-time)
+    """)
+
+elif st.session_state.page == "About Project":
+    # Call About Project Page Content
+    show_about_project()
+
+elif st.session_state.page == "About Us":
+    # Call About Us Page Content
+    show_about_us()
+
+elif st.session_state.page == "Who is This For?":
+    # Call Who is This For Page Content
+    show_who_is_this_for()
+
 
 st.markdown("""
 ## Table of Contents
