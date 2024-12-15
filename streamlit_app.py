@@ -13,11 +13,6 @@ st.set_page_config(
 # Title at the top
 if "page" not in st.session_state:
     st.session_state.page = "Home"  # Default page
-
-if st.session_state.page == "Home":
-    st.markdown(
-        "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>", 
-        unsafe_allow_html=True
 )
 
 # Welcome text as a single sentence
@@ -43,10 +38,6 @@ from navigation.who_is_this_for import show_who_is_this_for
 # Custom navigation with buttons
 def main():  
     # Button-based navigation layout
-   
-    # Initialize session state for page
-    if "page" not in st.session_state:
-        st.session_state.page = "Home"
         
  # Define the columns for button layout
     col1, col2, col3, col4 = st.columns(4)
@@ -61,23 +52,6 @@ def main():
     if col4.button("👥 Who is This For?"):
         st.session_state.page = "Who is This For?"
 
-    # Render the selected page
-    if st.session_state.page == "Home":
-        st.markdown(
-            "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>", 
-            unsafe_allow_html=True
-        )
-
-        st.markdown("""### Welcome!  
-        Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.""")
-
-        st.markdown("""
-        ## Table of Contents
-        - [GDP Comparison](#gdp-comparison)
-        - [Gini Coefficient](#gini-coefficient)
-        - [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
-        """)
-    
     # Render the selected page
     elif st.session_state.page == "About Project":
         show_about_project()
