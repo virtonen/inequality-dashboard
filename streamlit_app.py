@@ -5,6 +5,54 @@ import altair as alt
 from pathlib import Path
 import streamlit as st
 
+from navigation.about_project import show_about_project
+from navigation.about_us import show_about_us
+from navigation.who_is_this_for import show_who_is_this_for
+
+# Set the page configuration
+st.set_page_config(
+    page_title='World Inequality Dashboard',
+    page_icon=':earth_americas:',
+)
+
+# Initialize session state for page navigation
+if "page" not in st.session_state:
+    st.session_state.page = "Home"  # Default page
+
+# Navigation buttons function
+def show_navigation_buttons():
+    col1, col2, col3, col4 = st.columns(4)
+    if col1.button("🏠 Home"):
+        st.session_state.page = "Home"
+    if col2.button("🔍 About Project"):
+        st.session_state.page = "About Project"
+    if col3.button("📖 About Us"):
+        st.session_state.page = "About Us"
+    if col4.button("👥 Who is This For?"):
+        st.session_state.page = "Who is This For?"
+
+# Main function for navigation and content
+def main():  
+    # Render title at the top (always visible)
+    st.markdown(
+        "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>", 
+        unsafe_allow_html=True
+    )
+    # Show navigation buttons
+    show_navigation_buttons()
+
+    # Render content based on selected page
+    if st.session_state.page == "Home":
+        st.markdown("""
+        ### Welcome!  
+        Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
+        """)
+
+        st.markdown("""
+        ## Table of Contents
+        - [GDP Comparison](#gdp-comparison)
+        - [Gini Coefficient](#gini-coefficient)""")
+
 # -----------------------------------------------------------------------------
 # GINI DATA
 # Declare some useful functions.
@@ -95,54 +143,7 @@ def null_perc(df) :
 
 # -----------------------------------------------------------------------------
 # Draw the actual page
-import streamlit as st
-from navigation.about_project import show_about_project
-from navigation.about_us import show_about_us
-from navigation.who_is_this_for import show_who_is_this_for
 
-# Set the page configuration
-st.set_page_config(
-    page_title='World Inequality Dashboard',
-    page_icon=':earth_americas:',
-)
-
-# Initialize session state for page navigation
-if "page" not in st.session_state:
-    st.session_state.page = "Home"  # Default page
-
-# Navigation buttons function
-def show_navigation_buttons():
-    col1, col2, col3, col4 = st.columns(4)
-    if col1.button("🏠 Home"):
-        st.session_state.page = "Home"
-    if col2.button("🔍 About Project"):
-        st.session_state.page = "About Project"
-    if col3.button("📖 About Us"):
-        st.session_state.page = "About Us"
-    if col4.button("👥 Who is This For?"):
-        st.session_state.page = "Who is This For?"
-
-# Main function for navigation and content
-def main():  
-    # Render title at the top (always visible)
-    st.markdown(
-        "<h1 style='text-align: center;'>🌎 World Inequality Dashboard</h1>", 
-        unsafe_allow_html=True
-    )
-    # Show navigation buttons
-    show_navigation_buttons()
-
-    # Render content based on selected page
-    if st.session_state.page == "Home":
-        st.markdown("""
-        ### Welcome!  
-        Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
-        """)
-
-        st.markdown("""
-        ## Table of Contents
-        - [GDP Comparison](#gdp-comparison)
-        - [Gini Coefficient](#gini-coefficient)""")
 st.header('GDP Comparison', divider='gray')
 st.markdown("""
 Some insigths about GDP data""")
