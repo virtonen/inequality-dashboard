@@ -7,6 +7,9 @@ from pathlib import Path
 from navigation.about_project import show_about_project
 from navigation.about_us import show_about_us
 from navigation.who_is_this_for import show_who_is_this_for
+from navigation.gini_coefficient import show_gini_coefficient
+from navigation.gini_comparison import show_gini_comparison
+from navigation.poverty_headcount import show_poverty_headcount
 
 # Set the page configuration
 st.set_page_config(
@@ -31,6 +34,13 @@ def show_navigation_buttons():
         st.session_state.page = "About Us"
     if col4.button("👥 Who is This For?", key="who_is_this_for_btn"):
         st.session_state.page = "Who is This For?"
+    col5, col6, col7 = st.columns(3)
+    if col5.button("📊 Gini Comparison", key="gini_comparison_btn"):
+        st.session_state.page = "Gini Comparison"
+    if col6.button("📈 Gini Coefficient", key="gini_coefficient_btn"):
+        st.session_state.page = "Gini Coefficient"
+    if col7.button("📉 Poverty Headcount Ratio", key="poverty_headcount_btn"):
+        st.session_state.page = "Poverty Headcount"
 
 # Initialize session state for page navigation
 if "page" not in st.session_state:
@@ -47,13 +57,6 @@ if st.session_state.page == "Home":
     Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.
     """)
 
-    st.markdown("""
-    ## Table of Contents
-    - [GDP Comparison](#gdp-comparison)
-    - [Gini Coefficient](#gini-coefficient)
-    - [Poverty Headcount Ratio](#poverty-headcount-ratio-over-time)
-    """)
-
 elif st.session_state.page == "About Project":
     # Call About Project Page Content
     show_about_project()
@@ -66,6 +69,15 @@ elif st.session_state.page == "Who is This For?":
     # Call Who is This For Page Content
     show_who_is_this_for()
 
+elif st.session_state.page == "Gini Comparison":
+    show_gini_comparison()
+    
+elif st.session_state.page == "Gini Coefficient":
+    show_gini_coefficient()
+
+elif st.session_state.page == "Poverty Headcount":
+    show_poverty_headcount()
+    
 # -----------------------------------------------------------------------------
 # GINI DATA
 # Declare some useful functions.
