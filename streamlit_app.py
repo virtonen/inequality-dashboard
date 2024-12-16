@@ -7,7 +7,7 @@ from pathlib import Path
 from navigation.about_project import show_about_project
 from navigation.about_us import show_about_us
 from navigation.who_is_this_for import show_who_is_this_for
-from navigation.interactive_data import show_interactive_data
+from navigation.interactive_data import show_Interactive_Data
 
 # Set the page configuration
 st.set_page_config(
