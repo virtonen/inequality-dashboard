@@ -7,9 +7,7 @@ from pathlib import Path
 from navigation.about_project import show_about_project
 from navigation.about_us import show_about_us
 from navigation.who_is_this_for import show_who_is_this_for
-from navigation.gini_coefficient import show_gini_coefficient
-from navigation.gini_comparison import show_gini_comparison
-from navigation.poverty_headcount import show_poverty_headcount
+from navigation.interactive_data import show_interactive_data
 
 # Set the page configuration
 st.set_page_config(
@@ -25,7 +23,7 @@ st.markdown(
 
 # Navigation buttons with unique keys
 def show_navigation_buttons():
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
     if col1.button("🏠 Home", key="home_btn"):
         st.session_state.page = "Home"
     if col2.button("🔍 About Project", key="about_project_btn"):
@@ -34,13 +32,9 @@ def show_navigation_buttons():
         st.session_state.page = "About Us"
     if col4.button("👥 Who is This For?", key="who_is_this_for_btn"):
         st.session_state.page = "Who is This For?"
-    col5, col6, col7 = st.columns(3)
-    if col5.button("📊 Gini Comparison", key="gini_comparison_btn"):
-        st.session_state.page = "Gini Comparison"
-    if col6.button("📈 Gini Coefficient", key="gini_coefficient_btn"):
-        st.session_state.page = "Gini Coefficient"
-    if col7.button("📉 Poverty Headcount Ratio", key="poverty_headcount_btn"):
-        st.session_state.page = "Poverty Headcount"
+    if col5.button("📊 Interactive Data", key="Interactive_Data_btn"):
+        st.session_state.page = "Interactive Data"
+   
 
 # Initialize session state for page navigation
 if "page" not in st.session_state:
@@ -69,14 +63,8 @@ elif st.session_state.page == "Who is This For?":
     # Call Who is This For Page Content
     show_who_is_this_for()
 
-elif st.session_state.page == "Gini Comparison":
-    show_gini_comparison()
-    
-elif st.session_state.page == "Gini Coefficient":
-    show_gini_coefficient()
-
-elif st.session_state.page == "Poverty Headcount":
-    show_poverty_headcount()
+elif st.session_state.page == "Interactive Data":
+    show_Interactive_Data()
     
 # -----------------------------------------------------------------------------
 # GINI DATA
