@@ -9,6 +9,6 @@ def show_about_project():
     st.write("")
     
     # About Project section
-    st.markdown("## 🔍 About the Project")
+    st.markdown("### 🔍 About the Project")
     st.markdown("This project uses data from the **World Bank** and **World Inequality Lab** to provide interactive visualizations of global economic trends.")
 
