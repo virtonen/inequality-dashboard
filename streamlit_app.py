@@ -29,7 +29,7 @@ def show_navigation_buttons():
         st.session_state.page = "About Us"
     if col3.button("📊 Interactive Data", key="Interactive_Data_btn"):  # Moved this up
         st.session_state.page = "Interactive Data"
-    if col4.button("👥 Our Audience?", key="who_is_this_for_btn"):  # Moved this down
+    if col4.button("👥 Our Audience", key="who_is_this_for_btn"):  # Moved this down
         st.session_state.page = "Who is This For?"
    
 # Initialize session state for page navigation
