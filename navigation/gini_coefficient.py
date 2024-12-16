@@ -1,8 +1,34 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
+import math
 from pathlib import Path
 
+# Define function to load Gini data
+@st.cache_data
+def get_gini_data():
+    """Load and process Gini data from a CSV file."""
+    DATA_FILENAME = Path(__file__).parent / 'data/gini_data.csv'
+    raw_gini_df = pd.read_csv(DATA_FILENAME)
+    gini_df = raw_gini_df.melt(
+        ['Country Name', 'Country Code'],
+        var_name='Year',
+        value_name='GINI'
+    )
+    gini_df['Year'] = pd.to_numeric(gini_df['Year'])
+    return gini_df
+
+# Load Gini data
+gini_df = get_gini_data()
+
+# Define a function to calculate null percentages
+def null_perc(df):
+    percent_missing = df.isnull().sum() * 100 / len(df)
+    missing_value_df = pd.DataFrame({'percent_missing': percent_missing})
+    missing_value_df.sort_values('percent_missing', inplace=True, ascending=False)
+    return missing_value_df
+
+# Page Content
 st.markdown(r"""
 ## Gini Coefficient
 
@@ -56,48 +82,42 @@ This dashboard sources Gini coefficient data from the [World Bank Open Data](htt
 ''
 ''
 
-# data 
+# Display data
 st.subheader("Data: ")
 st.write(gini_df)
 
-# null values 
+# Display null values
 st.subheader("Null values: ")
-st.write(null_perc(gini_df) )
+st.write(null_perc(gini_df))
 
+# Slider for year range
 min_value = gini_df['Year'].min()
 max_value = gini_df['Year'].max()
-
 from_year, to_year = st.slider(
     'Which years are you interested in?',
     min_value=min_value,
     max_value=max_value,
-    value=[min_value, max_value])
+    value=[min_value, max_value]
+)
 
+# Multiselect for countries
 countries = gini_df['Country Name'].unique()
-
-if not len(countries):
-    st.warning("Select at least one country")
-
 selected_countries = st.multiselect(
     'Which countries would you like to view?',
     countries,
-    ['Germany', 'Brazil', 'Norway', 'South Africa', 'United States', 'Estonia'])
-
-''
-''
-''
+    ['Germany', 'Brazil', 'Norway', 'South Africa', 'United States', 'Estonia']
+)
 
 # Filter the data
 filtered_gini_df = gini_df[
-    (gini_df['Country Name'].isin(selected_countries))
-    & (gini_df['Year'] <= to_year)
-    & (from_year <= gini_df['Year'])
+    (gini_df['Country Name'].isin(selected_countries)) &
+    (gini_df['Year'] >= from_year) &
+    (gini_df['Year'] <= to_year)
 ]
 
 st.header('Gini over time', divider='gray')
 
-''
-
+# Plot the chart
 gini_chart = alt.Chart(filtered_gini_df).mark_line().encode(
     x=alt.X('Year:O', title='Year', axis=alt.Axis(format='d')),  # No commas in Year
     y=alt.Y('GINI', title='GINI'),
@@ -106,18 +126,13 @@ gini_chart = alt.Chart(filtered_gini_df).mark_line().encode(
 ).properties(
     title='Gini Coefficient over Time'
 )
-
 st.altair_chart(gini_chart, use_container_width=True)
 
-''
-''
-
+# Display metrics
 first_year = gini_df[gini_df['Year'] == from_year]
 last_year = gini_df[gini_df['Year'] == to_year]
 
 st.header(f'Gini in {to_year}', divider='gray')
-
-''
 
 st.markdown("""
 **Explanation:**  
@@ -125,16 +140,11 @@ The metrics below display the Gini coefficients for the selected countries in th
 """)
 
 cols = st.columns(4)
-
 for i, country in enumerate(selected_countries):
     col = cols[i % len(cols)]
-
     with col:
-        # Get Gini values for the selected country
         first_gini = first_year[first_year['Country Name'] == country]['GINI'].iat[0] if not first_year[first_year['Country Name'] == country].empty else None
         last_gini = last_year[last_year['Country Name'] == country]['GINI'].iat[0] if not last_year[last_year['Country Name'] == country].empty else None
-
-        # Handle missing values
         if first_gini is None or math.isnan(first_gini) or last_gini is None or math.isnan(last_gini):
             growth = 'n/a'
             delta_color = 'off'
@@ -143,7 +153,6 @@ for i, country in enumerate(selected_countries):
             growth = f'{last_gini - first_gini:.2f}'
             delta_color = 'inverse' if last_gini < first_gini else 'normal'
             display_gini = f'{last_gini:.2f}'
-
         st.metric(
             label=f'{country} GINI',
             value=display_gini,
