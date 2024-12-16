@@ -22,15 +22,15 @@ st.markdown(
 
 # Navigation buttons with unique keys
 def show_navigation_buttons():
-    col1, col2, col3, col4 = st.columns(4)  # Changed from 5 to 4 columns
+    col1, col2, col3, col4 = st.columns(4)  
     if col1.button("🔍 About Project", key="about_project_btn"):
         st.session_state.page = "About Project"
     if col2.button("📖 About Us", key="about_us_btn"):
         st.session_state.page = "About Us"
-    if col3.button("👥 Who is This For?", key="who_is_this_for_btn"):
-        st.session_state.page = "Who is This For?"
-    if col4.button("📊 Interactive Data", key="Interactive_Data_btn"):
+    if col3.button("📊 Interactive Data", key="Interactive_Data_btn"):  # Moved this up
         st.session_state.page = "Interactive Data"
+    if col4.button("👥 Who is This For?", key="who_is_this_for_btn"):  # Moved this down
+        st.session_state.page = "Who is This For?"
    
 # Initialize session state for page navigation
 if "page" not in st.session_state:
