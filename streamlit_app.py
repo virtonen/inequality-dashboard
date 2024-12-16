@@ -23,7 +23,7 @@ st.markdown(
 # Navigation buttons with unique keys
 def show_navigation_buttons():
     col1, col2, col3, col4 = st.columns(4)  
-    if col1.button("🔍 About Project", key="about_project_btn"):
+    if col1.button("🔍 About the Project", key="about_project_btn"):
         st.session_state.page = "About Project"
     if col2.button("📖 About Us", key="about_us_btn"):
         st.session_state.page = "About Us"
