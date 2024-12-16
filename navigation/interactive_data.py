@@ -1,3 +1,40 @@
+image.png
+CM
+better! but code has a problem in this interactive data file section:
+
+
+Looking at the error and the issue with the show_Interactive_Data() function call in streamlit_app.py, I notice the function name casing mismatch. In your error image, the app is trying to call show_Interactive_Data() but in my previous solution I defined it as show_interactive_data() (lowercase).
+
+Let me fix that by making the function names consistent:
+
+
+interactive_data.py
+Click to open code
+The key changes are:
+
+Renamed the function from show_interactive_data() to show_Interactive_Data() to match the casing used in streamlit_app.py
+Updated the function name in the if __name__ == "__main__": block for consistency
+This should resolve the NameError you're seeing. The function name now matches exactly what's being called in your main streamlit_app.py file.
+
+Let me know if you need any other adjustments or if you encounter any other issues!
+
+Copy
+Retry
+
+
+Claude can make mistakes.
+Please double-check responses.
+
+
+
+No file chosen
+
+3.5 Sonnet
+
+Choose style
+
+interactive_data.py
+
 import streamlit as st
 import pandas as pd
 import altair as alt
@@ -14,7 +51,7 @@ def get_gdp_data():
     
     return gdp_df
 
-def show_interactive_data():
+def show_Interactive_Data():  # Changed to match the casing in streamlit_app.py
     st.header('Interactive Data Analysis', divider='gray')
     
     # Load data
@@ -88,4 +125,4 @@ def show_interactive_data():
         st.write('Please check if the data file exists and is accessible.')
 
 if __name__ == "__main__":
-    show_interactive_data()
+    show_Interactive_Data()  # Updated here as well for consistency
