@@ -1,6 +1,6 @@
 import streamlit as st
 
-def show_about_project():
+def show_about_us():
     # Welcome section
     st.markdown("### Welcome!")
     st.markdown("Explore the dashboard to learn about **GDP Trends**, **Gini Coefficient**, and **Poverty Ratios**.")
