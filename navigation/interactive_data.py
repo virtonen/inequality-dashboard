@@ -76,6 +76,7 @@ def null_perc(df):
     missing_value_df.sort_values('percent_missing', inplace=True, ascending=False)
     return missing_value_df
 
+
 def show_Interactive_Data():
     st.header('GDP Comparison', divider='gray')
     st.markdown("""Some insights about GDP data""")
@@ -88,9 +89,10 @@ def show_Interactive_Data():
 
     gdp_from_year, gdp_to_year = st.slider(
         'Which years are you interested in for GDP deflator data?',
-        min_value=gdp_min_year,
-        max_value=gdp_max_year,
-        value=[gdp_min_year, gdp_max_year]
+        min_value=int(gdp_min_year),  # Convert to integer
+        max_value=int(gdp_max_year),  # Convert to integer
+        value=[int(gdp_min_year), int(gdp_max_year)],  # Convert default range to integers
+        step=1  # Ensure step is an integer
     )
 
     gdp_countries = gdp_deflator_df['Country Name'].unique()
@@ -109,9 +111,9 @@ def show_Interactive_Data():
 
     gdp_deflator_chart = alt.Chart(filtered_gdp_deflator_df).mark_line().encode(
         x=alt.X('Year:O', title='Year', axis=alt.Axis(format='d')),
-        y=alt.Y('GDP Deflator', 
+        y=alt.Y('GDP Deflator:Q', 
                 title='GDP Deflator (%)',
-                axis=alt.Axis(format='.2f')),
+                axis=alt.Axis(format='d', tickCount=5)),  # Show integers instead of floats
         color='Country Name:N',
         tooltip=['Country Name', 'Year', 'GDP Deflator']
     ).properties(
@@ -171,7 +173,7 @@ def show_Interactive_Data():
     # Create the chart
     indicator_chart = alt.Chart(filtered_indicator_df).mark_line().encode(
         x=alt.X('Year:O', title='Year', axis=alt.Axis(format='d', grid=True)),
-        y=alt.Y('Value', title=selected_series, axis=alt.Axis(format=',.0f', tickCount=5, grid=True)),
+        y=alt.Y('Value:Q', title=selected_series, axis=alt.Axis(format=',.0f', tickCount=5, grid=True)),
         color='Country Name:N',
         tooltip=['Country Name', 'Year', 'Value']
     ).properties(
@@ -183,9 +185,54 @@ def show_Interactive_Data():
 
     st.altair_chart(indicator_chart, use_container_width=True)
 
+
+
     # Gini Coefficient Section
     gini_df = get_gini_data()
-    
+    st.header(f'Gini Coefficient', divider='gray')
+    st.markdown(r"""
+
+The **Gini coefficient** is a measure of statistical dispersion intended to represent
+the income inequality or wealth inequality within a nation or a social group.
+It is the most commonly used measure of inequality. A Gini coefficient of 0
+represents perfect equality, where everyone has the same income, while a Gini
+coefficient of 100 implies perfect inequality, where one person has all the income
+and everyone else has none. Most countries have Gini coefficients between 25-60, 
+with lower values indicating more equality and higher values indicating more inequality.
+
+## Relation to the Lorenz Curve
+The Gini coefficient is derived from the [Lorenz curve](https://en.wikipedia.org/wiki/Lorenz_curve),
+which graphically represents the distribution of income or wealth within a population.
+The Gini coefficient is defined as the ratio of the area between the Lorenz curve and the line of equality
+to the total area under the line of equality.
+
+## Calculation Formula
+
+The Gini coefficient ($G$) can be calculated using the following formula:
+
+$$
+G = \frac{A}{A + B}
+$$
+
+where:
+- A is the area between the line of equality and the Lorenz curve.
+- B is the area under the Lorenz curve.
+
+Alternatively, it can be calculated using the formula:
+
+$$
+G = \frac{1}{n^2 \mu} \sum_{i=1}^{n} \sum_{j=1}^{n} |x_i - x_j|
+$$
+
+where:
+- n is the number of observations.
+- $\mu$ is the mean of the distribution.
+- $x_i$ and $x_j$ are individual values.
+
+This dashboard reads Gini coefficient data from a CSV file obtained from the [World Bank Open Data](https://data.worldbank.org/),
+which contains Gini coefficients for various countries over a range of years.
+""")
+
     st.subheader("Data: ")
     st.write(gini_df)
     
@@ -222,7 +269,7 @@ def show_Interactive_Data():
 
     gini_chart = alt.Chart(filtered_gini_df).mark_line().encode(
         x=alt.X('Year:O', title='Year', axis=alt.Axis(format='d')),
-        y=alt.Y('GINI', title='GINI'),
+        y=alt.Y('GINI:Q', title='GINI', axis=alt.Axis(format=',.0f', tickCount=5)),
         color='Country Name:N',
         tooltip=['Country Name', 'Year', 'GINI']
     ).properties(
@@ -308,7 +355,7 @@ def show_Interactive_Data():
 
     poverty_chart = alt.Chart(filtered_poverty_df).mark_line().encode(
         x=alt.X('Year:O', title='Year'),
-        y=alt.Y('Poverty Headcount Ratio', title='Headcount Ratio (%)'),
+        y=alt.Y('Poverty Headcount Ratio:Q', title='Headcount Ratio (%)', axis=alt.Axis(format=',.0f', tickCount=5)),
         color='Country Name:N',
         tooltip=['Country Name', 'Year', 'Poverty Headcount Ratio']
     ).properties(
@@ -316,6 +363,19 @@ def show_Interactive_Data():
     )
 
     st.altair_chart(poverty_chart, use_container_width=True)
+
+def new_func(filtered_gdp_deflator_df):
+    gdp_deflator_chart = alt.Chart(filtered_gdp_deflator_df).mark_line().encode(
+        x=alt.X('Year:O', title='Year', axis=alt.Axis(format='d')),
+        y=alt.Y('GDP Deflator', 
+                title='GDP Deflator (%)',
+                axis=alt.Axis(format='.2f')),
+        color='Country Name:N',
+        tooltip=['Country Name', 'Year', 'GDP Deflator']
+    ).properties(
+        title='GDP Deflator over time'
+    )
+    st.altair_chart(gdp_deflator_chart, use_container_width=True)
 
 if __name__ == "__main__":
     show_Interactive_Data()
