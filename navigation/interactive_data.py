@@ -3,6 +3,7 @@ import pandas as pd
 import math
 import altair as alt
 from pathlib import Path
+import plotly.graph_objects as go
 
 # Cache decorators for each data loading function
 @st.cache_data
@@ -78,8 +79,8 @@ def null_perc(df):
 
 
 def show_Interactive_Data():
-    st.header('GDP Comparison', divider='gray')
-    st.markdown("""Some insights about GDP data""")
+    st.header('GDP Deflator Comparison', divider='gray')
+    st.markdown("""Some insights about GDP deflator data""")
     
     gdp_deflator_df = get_gdp_data()
 
@@ -120,6 +121,77 @@ def show_Interactive_Data():
         title='GDP Deflator over time'
     )
     st.altair_chart(gdp_deflator_chart, use_container_width=True)
+
+    # MAP
+    # Get the unique years and countries in the data
+    years = gdp_deflator_df['Year'].unique()
+    countries = sorted(gdp_deflator_df['Country Name'].unique())  # Sort countries alphabetically for clarity
+
+    # Allow the user to select the year range
+    selected_year_range = st.slider(
+        'Select the year range',
+        min_value=int(years.min()),
+        max_value=int(years.max()),
+        value=[int(years.min()), int(years.max())]
+    )
+
+    # Extract the selected start and end year
+    selected_start_year, selected_end_year = selected_year_range
+
+    # Checkbox to select all or none of the countries
+    select_all = st.checkbox('Select all countries', value=True)
+
+    # Multiselect widget for countries
+    if select_all:
+        selected_countries = countries  # If the checkbox is checked, select all countries
+    else:
+        selected_countries = st.multiselect(
+            'Select the countries',
+            options=countries,  # Dynamically populate from dataset
+            default=[]  # Start with no countries selected when checkbox is unchecked
+        )
+
+    # Filter the data for the selected year and countries
+    gdp_deflator_year_df = gdp_deflator_df[
+        (gdp_deflator_df['Year'] == selected_start_year) &
+        (gdp_deflator_df['Country Name'].isin(selected_countries))
+    ]
+
+    # Create the choropleth map
+    world_map = go.Figure(data=go.Choropleth(
+        locations=gdp_deflator_year_df['Country Code'],
+        z=gdp_deflator_year_df['GDP Deflator'],
+        text=gdp_deflator_year_df['Country Name'],  # Add country name to tooltips
+        colorscale='Viridis',
+        autocolorscale=False,
+        reversescale=True,
+        marker_line_color='darkgray',
+        marker_line_width=0.5,
+        colorbar_title="GDP Deflator (%)"
+    ))
+
+    # Update the layout for the map
+    world_map.update_layout(
+        title_text=f'GDP Deflator in {selected_start_year}',
+        geo=dict(
+            showframe=False,
+            showcoastlines=False,
+            projection_type='equirectangular'
+        ),
+        annotations=[dict(
+            x=0.5,
+            y=-0.1,
+            xref='paper',
+            yref='paper',
+            text='Source: World Inequality Database',
+            showarrow=False
+        )]
+    )
+
+    # Display the map in the Streamlit app
+    st.plotly_chart(world_map, use_container_width=True, config={'scrollZoom': True})
+
+    #-----------------#
 
     # Variable selector for indicators
     indicator_df = pd.read_csv(Path(__file__).parent.parent/'data/world_bank_popular_indicators.csv')

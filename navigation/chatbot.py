@@ -10,9 +10,7 @@ def show_chatbot():
             confirm_key = st.form_submit_button("Confirm")
         if confirm_key and openai_api_key:
             st.success("API key inserted!")
-        "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
-        "[View the source code](https://github.com/streamlit/llm-examples/blob/main/Chatbot.py)"
-        "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/streamlit/llm-examples?quickstart=1)"
+        st.markdown("[Get an OpenAI API key](https://platform.openai.com/account/api-keys)")
 
     st.title("💬 Inequality Chatbot")
 
