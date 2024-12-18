@@ -77,10 +77,44 @@ def null_perc(df):
     missing_value_df.sort_values('percent_missing', inplace=True, ascending=False)
     return missing_value_df
 
+# -----------------#
+# PAGE STARTS HERE
 
 def show_Interactive_Data():
     st.header('GDP Deflator Comparison', divider='gray')
-    st.markdown("""Some insights about GDP deflator data""")
+    st.markdown("""
+    ### Understanding the GDP Deflator
+
+    You probably have heard about inflation, but have you heard about the GDP Deflator? Every economy's price levels are changing differently, and the GDP Deflator is one way to represent how differently (or unequally) our economies are developing.
+
+    #### What is the GDP Deflator?
+    The **GDP Deflator** is a measure of the level of prices of all new, domestically produced, final goods and services in an economy. It is calculated as follows:
+
+    $$
+    \\text{GDP Deflator} = \\frac{\\text{Nominal GDP}}{\\text{Real GDP}} \\times 100
+    $$
+
+    #### Why is it Important?
+    - **Comprehensive Measure**: Unlike the Consumer Price Index (CPI), the GDP Deflator includes all goods and services produced domestically, providing a broader measure of inflation.
+    - **Economic Analysis**: It helps economists and policymakers understand the inflationary pressures within the economy and make informed decisions regarding monetary policy.
+
+    #### Strengths
+    - **Broad Coverage**: Includes all domestically produced goods and services.
+    - **Reflects Changes in Consumption and Investment**: Adjusts for changes in consumption patterns and investment, providing a more accurate measure of inflation over time.
+
+    #### Limitations
+    - **Data Lag**: The GDP Deflator is typically released quarterly, which may not provide the most up-to-date picture of inflation.
+    - **Complex Calculation**: Requires comprehensive data on all goods and services produced, which can be complex and resource-intensive to gather.
+
+    This dashboard allows you to explore the GDP Deflator data across different countries and years, providing insights into how inflation has evolved over time. Use the interactive tools to filter the data by year and country, and visualize the trends through dynamic charts and maps.
+
+    More inequality measures follow in the next sections.
+    """)
+
+    # Preview the GDP Deflator dataset
+    st.subheader("Data: ")
+    gdp_deflator_df = get_gdp_data()
+    st.write(gdp_deflator_df)
     
     gdp_deflator_df = get_gdp_data()
 
