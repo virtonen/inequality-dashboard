@@ -77,6 +77,25 @@ def null_perc(df):
     missing_value_df.sort_values('percent_missing', inplace=True, ascending=False)
     return missing_value_df
 
+@st.cache_data
+def get_wiid_data():
+    """Grab WIID (World Income Inequality Database) data from a CSV file."""
+    DATA_FILENAME = Path(__file__).parent.parent/'data/WIID_data.csv'
+    wiid_df = pd.read_csv(DATA_FILENAME)
+    
+    # Convert numeric columns
+    numeric_columns = ['gini', 'mean', 'median', 'gdp', 'population']
+    for col in numeric_columns:
+        wiid_df[col] = pd.to_numeric(wiid_df[col], errors='coerce')
+    
+    # Convert year to integer
+    wiid_df['year'] = pd.to_numeric(wiid_df['year'], errors='coerce')
+    
+    # Drop rows with missing key values
+    wiid_df = wiid_df.dropna(subset=['country', 'year', 'gini'])
+    
+    return wiid_df
+
 # -----------------#
 # PAGE STARTS HERE
 
@@ -165,16 +184,12 @@ def show_Interactive_Data():
     years = gdp_deflator_df['Year'].unique()
     countries = sorted(gdp_deflator_df['Country Name'].unique())  # Sort countries alphabetically for clarity
 
-    # Allow the user to select the year range
-    selected_year_range = st.slider(
-        'Select the year range',
-        min_value=int(years.min()),
-        max_value=int(years.max()),
-        value=[int(years.min()), int(years.max())]
+    # Allow the user to select a single year
+    selected_year = st.select_slider(
+        'Select the year',
+        options=sorted(years),
+        value=int(years.min())
     )
-
-    # Extract the selected start and end year
-    selected_start_year, selected_end_year = selected_year_range
 
     # Checkbox to select all or none of the countries
     select_all = st.checkbox('Select all countries', value=True)
@@ -191,26 +206,16 @@ def show_Interactive_Data():
 
     # Filter the data for the selected year and countries
     gdp_deflator_year_df = gdp_deflator_df[
-        (gdp_deflator_df['Year'] == selected_start_year) &
+        (gdp_deflator_df['Year'] == selected_year) &
         (gdp_deflator_df['Country Name'].isin(selected_countries))
     ]
 
     # Create the choropleth map
-    world_map = go.Figure(data=go.Choropleth(
-        locations=gdp_deflator_year_df['Country Code'],
-        z=gdp_deflator_year_df['GDP Deflator'],
-        text=gdp_deflator_year_df['Country Name'],  # Add country name to tooltips
-        colorscale='Viridis',
-        autocolorscale=False,
-        reversescale=True,
-        marker_line_color='darkgray',
-        marker_line_width=0.5,
-        colorbar_title="GDP Deflator (%)"
-    ))
+    world_map = new_func1(gdp_deflator_year_df)
 
     # Update the layout for the map
     world_map.update_layout(
-        title_text=f'GDP Deflator in {selected_start_year}',
+        title_text=f'GDP Deflator in {selected_year}',
         geo=dict(
             showframe=False,
             showcoastlines=False,
@@ -482,6 +487,121 @@ which contains Gini coefficients for various countries over a range of years.
     )
 
     st.altair_chart(poverty_chart, use_container_width=True)
+    # Income Distribution by Quintiles
+
+    # Load and prepare WIID data
+    wiid_df = get_wiid_data()
+
+    st.header('Income Distribution by Quintiles', divider='gray')
+    st.markdown("""
+    The **quintile shares** indicate the percentage of total income held by each 20% of the population. This visualization allows you to explore how income is distributed across different countries and time periods.
+    """)
+
+    # First get available years
+    available_years = sorted(wiid_df['year'].unique())
+    if not available_years:
+        st.warning("No data available")
+        st.stop()
+
+    # Year selector comes first
+    selected_year = st.select_slider(
+        'Select Year for Visualization',
+        options=available_years,
+        value=available_years[-1]
+    )
+
+    # Filter countries that have data for the selected year
+    available_countries = sorted(wiid_df[wiid_df['year'] == selected_year]['country'].unique())
+    
+    # Country selector with only available countries
+    selected_wiid_countries = st.multiselect(
+        'Select Countries',
+        options=available_countries,
+        default=['Latvia', 'Estonia'] if 'Latvia' in available_countries and 'Estonia' in available_countries 
+        else [available_countries[0]] if available_countries else []
+    )
+
+    if not selected_wiid_countries:
+        st.warning("Please select at least one country to view income distribution data.")
+        st.stop()
+
+    # Filter the data by selected countries and year
+    filtered_wiid_df = wiid_df[
+        (wiid_df['country'].isin(selected_wiid_countries)) &
+        (wiid_df['year'] == selected_year)
+    ]
+
+    # Ensure the quintile columns are numeric
+    quintile_cols = ['q1', 'q2', 'q3', 'q4', 'q5']
+    filtered_wiid_df[quintile_cols] = filtered_wiid_df[quintile_cols].apply(pd.to_numeric, errors='coerce')
+
+    # Create a cleaner view of quintile data
+    quintile_data = filtered_wiid_df[['country', 'year'] + quintile_cols].dropna()
+    
+    if quintile_data.empty:
+        st.warning("No quintile data available for the selected countries and year.")
+    else:
+        # Melt the dataframe for visualization
+        melted_wiid_df = quintile_data.melt(
+            id_vars=['country', 'year'],
+            value_vars=quintile_cols,
+            var_name='Quintile',
+            value_name='Income Share'
+        )
+
+        # Create more readable quintile labels
+        melted_wiid_df['Quintile'] = melted_wiid_df['Quintile'].map({
+            'q1': 'Bottom 20%',
+            'q2': 'Lower Middle 20%',
+            'q3': 'Middle 20%',
+            'q4': 'Upper Middle 20%',
+            'q5': 'Top 20%'
+        })
+
+        # Create the Altair chart with stacked bars
+        quintile_chart = alt.Chart(melted_wiid_df).mark_bar().encode(
+            x=alt.X('country:N', title='Country'),
+            y=alt.Y('Income Share:Q', 
+               title='Income Share (%)', 
+               stack='normalize',
+               axis=alt.Axis(format='.1f')),
+            color=alt.Color('Quintile:N', 
+                  title='Income Group',
+                  scale=alt.Scale(scheme='spectral')),
+            tooltip=[
+            alt.Tooltip('country:N', title='Country'),
+            alt.Tooltip('year:Q', title='Year'),
+            alt.Tooltip('Quintile:N', title='Income Group'),
+            alt.Tooltip('Income Share:Q', title='Share', format='.1f')
+            ]
+        ).properties(
+            title=f'Income Distribution by Quintile ({selected_year})',
+            height=400
+        ).configure_axis(
+            labelFontSize=12,
+            titleFontSize=14
+        ).configure_title(
+            fontSize=16
+        )
+
+        st.altair_chart(quintile_chart, use_container_width=True)
+
+def new_func1(gdp_deflator_year_df):
+    world_map = go.Figure(data=go.Choropleth(
+        locations=gdp_deflator_year_df['Country Code'],
+        z=gdp_deflator_year_df['GDP Deflator'],
+        text=gdp_deflator_year_df['Country Name'],
+        # Use colorblind-friendly diverging colorscale centered at 0
+        colorscale='RdBu',  # Red-Blue diverging colorscale that works well for colorblind viewers
+        zmid=0,  # Center the color scale at 0
+        autocolorscale=False,
+        reversescale=True,  # Makes blue represent positive values, red negative
+        marker_line_color='darkgray',
+        marker_line_width=0.5,
+        colorbar_title="GDP Deflator (%)"
+    ))
+    
+    return world_map
 
 def new_func(filtered_gdp_deflator_df):
     gdp_deflator_chart = alt.Chart(filtered_gdp_deflator_df).mark_line().encode(
