@@ -495,6 +495,7 @@ which contains Gini coefficients for various countries over a range of years.
     st.header('Income Distribution by Quintiles', divider='gray')
     st.markdown("""
     The **quintile shares** indicate the percentage of total income held by each 20% of the population. This visualization allows you to explore how income is distributed across different countries and time periods.
+    If the quintile plot does not show your selected country, then the data for that country for the given year is not available.
     """)
 
     # First get available years
@@ -517,8 +518,10 @@ which contains Gini coefficients for various countries over a range of years.
     selected_wiid_countries = st.multiselect(
         'Select Countries',
         options=available_countries,
-        default=['Latvia', 'Estonia'] if 'Latvia' in available_countries and 'Estonia' in available_countries 
-        else [available_countries[0]] if available_countries else []
+        default=[
+            country for country in ['Latvia', 'Estonia', 'Costa Rica', 'Bhutan', 'Belgium', 'Austria', 'Ecuador', 'Cyprus', 'Denmark']
+            if country in available_countries
+        ] if available_countries else []
     )
 
     if not selected_wiid_countries:
@@ -550,13 +553,17 @@ which contains Gini coefficients for various countries over a range of years.
         )
 
         # Create more readable quintile labels
-        melted_wiid_df['Quintile'] = melted_wiid_df['Quintile'].map({
-            'q1': 'Bottom 20%',
-            'q2': 'Lower Middle 20%',
-            'q3': 'Middle 20%',
-            'q4': 'Upper Middle 20%',
-            'q5': 'Top 20%'
-        })
+        melted_wiid_df['Quintile'] = pd.Categorical(
+            melted_wiid_df['Quintile'].map({
+                'q1': 'Bottom 20%',
+                'q2': 'Lower Middle 20%',
+                'q3': 'Middle 20%',
+                'q4': 'Upper Middle 20%',
+                'q5': 'Top 20%'
+            }),
+            categories=['Bottom 20%', 'Lower Middle 20%', 'Middle 20%', 'Upper Middle 20%', 'Top 20%'],
+            ordered=True
+        )
 
         # Create the Altair chart with stacked bars
         quintile_chart = alt.Chart(melted_wiid_df).mark_bar().encode(
@@ -567,7 +574,8 @@ which contains Gini coefficients for various countries over a range of years.
                axis=alt.Axis(format='.1f')),
             color=alt.Color('Quintile:N', 
                   title='Income Group',
-                  scale=alt.Scale(scheme='spectral')),
+                  scale=alt.Scale(scheme='spectral'),
+                  sort=['Bottom 20%', 'Lower Middle 20%', 'Middle 20%', 'Upper Middle 20%', 'Top 20%']),
             tooltip=[
             alt.Tooltip('country:N', title='Country'),
             alt.Tooltip('year:Q', title='Year'),
