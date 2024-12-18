@@ -113,6 +113,10 @@ def show_Interactive_Data():
 
     # Preview the GDP Deflator dataset
     st.subheader("Data: ")
+    st.markdown("""
+    #### Data Source
+    The data presented here is sourced from the [World Bank](https://databank.worldbank.org/indicator/SP.POP.TOTL/1ff4a498/Popular-Indicators). The World Development Indicators (WDI) is the primary World Bank collection of development indicators, compiled from officially recognized international sources. It presents the most current and accurate global development data available, and includes national, regional, and global estimates.
+    """)
     gdp_deflator_df = get_gdp_data()
     st.write(gdp_deflator_df)
     
@@ -432,6 +436,15 @@ which contains Gini coefficients for various countries over a range of years.
     - **Source**: World Bank, Poverty and Inequality Platform.
     - **Indicator**: Poverty headcount ratio at $2.15 a day (2017 PPP).
     - **Description**: Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. High-income economies' data are primarily from the Luxembourg Income Study database. More info at [pip.worldbank.org](https://pip.worldbank.org).
+
+    #### Why is the Poverty Headcount Ratio Important?
+    The **Poverty Headcount Ratio** is a critical measure of inequality that captures aspects of economic disparity that the Gini coefficient and GDP Deflator do not. While the Gini coefficient provides a broad measure of income inequality and the GDP Deflator reflects inflationary pressures, the Poverty Headcount Ratio directly measures the proportion of a population living below the poverty line, offering a more tangible and human-centric view of economic hardship.
+
+    - **Human Impact**: Unlike the Gini coefficient, which can sometimes obscure the real-life implications of inequality, the Poverty Headcount Ratio highlights the actual number of people struggling to meet basic needs.
+    - **Economic Development**: The GDP Deflator measures price changes in an economy, but it does not account for how these changes affect the poorest segments of society. The Poverty Headcount Ratio provides insight into whether economic growth is inclusive and benefits the most vulnerable populations.
+    - **Policy Relevance**: Policymakers can use the Poverty Headcount Ratio to design targeted interventions aimed at poverty reduction, ensuring that economic policies are inclusive and equitable.
+
+    This metric is essential for understanding the depth and breadth of poverty within a country, making it a vital tool for assessing the effectiveness of poverty alleviation programs and economic policies.
     """)
 
     # Filter years and countries for poverty data
