@@ -37,7 +37,6 @@ def about():
     
     st.markdown("### 👥 Authors")
     st.write("""
-    This project wouldn't have been possible without the analytical and design efforts of our team:
     - [Maggie Possidente](https://www.linkedin.com/in/maggie-possidente/)
     - [Yelyzaveta Radionova](https://www.linkedin.com/in/yelyzaveta-radionova/)
     - [Vladislav Virtonen](https://www.linkedin.com/in/virtonen/)
