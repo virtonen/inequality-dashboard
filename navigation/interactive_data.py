@@ -402,7 +402,7 @@ which contains Gini coefficients for various countries over a range of years.
         'Which years are you interested in?',
         min_value=min_value,
         max_value=max_value,
-        value=[min_value, max_value])
+        value=[2011, 2016] if min_value <= 2011 <= max_value and min_value <= 2016 <= max_value else [min_value, max_value])
 
     countries = gini_df['Country Name'].unique()
 
@@ -412,7 +412,7 @@ which contains Gini coefficients for various countries over a range of years.
     selected_countries = st.multiselect(
         'Which countries would you like to view?',
         countries,
-        ['Germany', 'Brazil', 'Norway', 'South Africa', 'United States', 'Estonia'])
+        ['Germany', 'Brazil', 'Norway', 'United States', 'Estonia'])
 
     # Filter the data
     filtered_gini_df = gini_df[
