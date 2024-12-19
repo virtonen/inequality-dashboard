@@ -31,7 +31,7 @@ def show_navigation_buttons():
    
 # Initialize session state for page navigation
 if "page" not in st.session_state:
-    st.session_state.page = "About"
+    st.session_state.page = "Interactive Data"
 
 # Show navigation buttons at the top
 show_navigation_buttons()

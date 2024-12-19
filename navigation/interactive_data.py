@@ -100,6 +100,14 @@ def get_wiid_data():
 # PAGE STARTS HERE
 
 def show_Interactive_Data():
+    st.header('Table of Contents')
+    st.markdown("""
+    - [GDP Deflator Comparison](#gdp-deflator-comparison)
+    - [Visualize Your Own Variable](#visualize-your-own-variable)
+    - [Gini Coefficient](#gini-coefficient)
+    - [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
+    - [Income Distribution by Quintiles](#income-distribution-by-quintiles)
+    """)
     st.header('GDP Deflator Comparison', divider='gray')
     st.markdown("""
     ### Understanding the GDP Deflator
@@ -306,6 +314,7 @@ def show_Interactive_Data():
     gini_df = get_gini_data()
     st.header(f'Gini Coefficient', divider='gray')
     st.markdown(r"""
+While the GDP deflator provides insights into how an economy is performing as a whole, it tells us nothing about how resources are distributed within that economy - this is why we turn to measures of inequality like the Gini coefficient.
 
 The **Gini coefficient** is a measure of statistical dispersion intended to represent
 the income inequality or wealth inequality within a nation or a social group.
@@ -431,7 +440,7 @@ which contains Gini coefficients for various countries over a range of years.
             )
 
     # Poverty Section
-    st.header('Poverty Headcount Ratio over time', divider='gray')
+    st.header('Poverty Headcount Ratio', divider='gray')
 
     poverty_df = get_poverty_data()
 
@@ -494,8 +503,28 @@ which contains Gini coefficients for various countries over a range of years.
 
     st.header('Income Distribution by Quintiles', divider='gray')
     st.markdown("""
-    The **quintile shares** indicate the percentage of total income held by each 20% of the population. This visualization allows you to explore how income is distributed across different countries and time periods.
-    If the quintile plot does not show your selected country, then the data for that country for the given year is not available.
+    ### Understanding Income Distribution through Quintile Shares
+
+    The **quintile shares** indicate how total income is distributed across five equal segments (20% each) of the population, ordered from lowest to highest income. This metric provides a detailed view of income inequality that complements both the Gini coefficient and Poverty Headcount Ratio.
+
+    #### What are Quintile Shares?
+    - The population is divided into five equal groups (quintiles) based on income.
+    - First quintile (Q1): Poorest 20% of the population.
+    - Fifth quintile (Q5): Richest 20% of the population.
+    - Shares are expressed as percentages of total income.
+
+    #### Advantages over Other Inequality Measures:
+    - **More Granular than Gini**: While the Gini coefficient provides a single number, quintile shares show exactly where in the distribution inequality occurs.
+    - **Better than Poverty Headcount**: Instead of just showing how many are below a threshold, quintiles reveal the entire distribution of income.
+    - **Policy Relevance**: Helps identify which segments of society might need targeted economic interventions.
+
+    #### Reading the Visualization:
+    - Each bar represents 100% of a country's income.
+    - The five colored segments show how that income is divided.
+    - In a perfectly equal society, each quintile would receive 20% of total income.
+    - Larger top quintile shares indicate greater inequality.
+
+    Note: If your selected country doesn't appear in the plot, data for that country-year combination is not available in the World Income Inequality Database (WIID).
     """)
 
     # First get available years
@@ -555,32 +584,37 @@ which contains Gini coefficients for various countries over a range of years.
         # Create more readable quintile labels
         melted_wiid_df['Quintile'] = pd.Categorical(
             melted_wiid_df['Quintile'].map({
-                'q1': 'Bottom 20%',
-                'q2': 'Lower Middle 20%',
-                'q3': 'Middle 20%',
-                'q4': 'Upper Middle 20%',
-                'q5': 'Top 20%'
+                'q1': '0-20%',
+                'q2': '20-40%',
+                'q3': '40-60%',
+                'q4': '60-80%',
+                'q5': '80-100%'
             }),
-            categories=['Bottom 20%', 'Lower Middle 20%', 'Middle 20%', 'Upper Middle 20%', 'Top 20%'],
+            categories=['0-20%', '20-40%', '40-60%', '60-80%', '80-100%'],
             ordered=True
         )
 
         # Create the Altair chart with stacked bars
         quintile_chart = alt.Chart(melted_wiid_df).mark_bar().encode(
             x=alt.X('country:N', title='Country'),
-            y=alt.Y('Income Share:Q', 
-               title='Income Share (%)', 
-               stack='normalize',
-               axis=alt.Axis(format='.1f')),
-            color=alt.Color('Quintile:N', 
-                  title='Income Group',
-                  scale=alt.Scale(scheme='spectral'),
-                  sort=['Bottom 20%', 'Lower Middle 20%', 'Middle 20%', 'Upper Middle 20%', 'Top 20%']),
+            y=alt.Y(
+                'Income Share:Q',
+                title='Income Share (%)',
+                stack='normalize',
+                axis=alt.Axis(format='.1f')
+            ),
+            color=alt.Color(
+                'Quintile:N',
+                title='Quintile',
+                scale=alt.Scale(scheme='spectral'),
+                sort=['Top 20%', 'Middle (upper) 20%', 'Middle 20%', 'Middle (lower) 20%', 'Bottom 20%']
+            ),
+            order=alt.Order('Quintile:N', sort='ascending'),
             tooltip=[
-            alt.Tooltip('country:N', title='Country'),
-            alt.Tooltip('year:Q', title='Year'),
-            alt.Tooltip('Quintile:N', title='Income Group'),
-            alt.Tooltip('Income Share:Q', title='Share', format='.1f')
+                alt.Tooltip('country:N', title='Country'),
+                alt.Tooltip('year:Q', title='Year'),
+                alt.Tooltip('Quintile:N', title='Quintile'),
+                alt.Tooltip('Income Share:Q', title='Share', format='.1f')
             ]
         ).properties(
             title=f'Income Distribution by Quintile ({selected_year})',
