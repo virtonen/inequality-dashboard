@@ -437,7 +437,7 @@ which contains Gini coefficients for various countries over a range of years.
     first_year = gini_df[gini_df['Year'] == from_year]
     last_year = gini_df[gini_df['Year'] == to_year]
 
-    st.header(f'Gini in {to_year}', divider='gray')
+    st.header(f'Change in Gini from {from_year} to {to_year}', divider='gray')
 
     st.markdown("""
     **Explanation:**  
