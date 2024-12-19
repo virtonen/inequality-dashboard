@@ -391,9 +391,6 @@ which contains Gini coefficients for various countries over a range of years.
 
     st.subheader("Data: ")
     st.write(gini_df)
-    
-    st.subheader("Null values: ")
-    st.write(null_perc(gini_df))
 
     min_value = gini_df['Year'].min()
     max_value = gini_df['Year'].max()
