@@ -107,6 +107,7 @@ def show_Interactive_Data():
     - [Gini Coefficient](#gini-coefficient)
     - [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
     - [Income Distribution by Quintiles](#income-distribution-by-quintiles)
+    - [Income Inequality Ratios](#inequality-ratios)
     """)
     st.header('GDP Deflator Comparison', divider='gray')
     st.markdown("""
@@ -507,6 +508,9 @@ which contains Gini coefficients for various countries over a range of years.
 
     The **quintile shares** indicate how total income is distributed across five equal segments (20% each) of the population, ordered from lowest to highest income. This metric provides a detailed view of income inequality that complements both the Gini coefficient and Poverty Headcount Ratio.
 
+    #### Data Source
+    The data presented here is sourced from the [World Income Inequality Database (WIID)](https://www.wider.unu.edu/database/world-income-inequality-database-wiid) by UNU-WIDER.
+
     #### What are Quintile Shares?
     - The population is divided into five equal groups (quintiles) based on income.
     - First quintile (Q1): Poorest 20% of the population.
@@ -627,7 +631,117 @@ which contains Gini coefficients for various countries over a range of years.
         )
 
         st.altair_chart(quintile_chart, use_container_width=True)
+        # Add Palma ratio and other inequality metrics over time
+        st.header('Income Inequality Ratios', divider='gray')
+        st.markdown("""
+        ### Understanding Alternative Inequality Metrics: Ratios
 
+        In the previous section, we explored income distribution through quintile shares, which provided a detailed view of how income is distributed across different segments of the population. Building on that, we can derive additional insights using specific ratios that highlight different aspects of inequality.
+
+        - **Palma Ratio**: The ratio of the richest 10%'s share of gross national income divided by the poorest 40%'s share. This metric emphasizes the disparity between the top and bottom of the income distribution.
+        - **Top20/Bottom20 Ratio**: The ratio of income share of the richest 20% to the poorest 20%. This ratio is directly derived from the quintile data explored above and provides a clear measure of inequality between the top and bottom quintiles.
+        - **Upper Middle/Lower Middle Ratio**: The ratio of income share between the upper middle (Q4) and lower middle (Q2) quintiles. This ratio, also derived from the quintile data, highlights the disparity within the middle segments of the population.
+
+        These ratios offer a more detailed understanding of income inequality, complementing the quintile shares by focusing on specific parts of the income distribution and the relationship between them. These ratios are also helpful for analyzing relative changes in inequality across time.
+        """)
+
+        # Country selector for metrics
+        metric_countries = sorted(wiid_df['country'].unique())
+        selected_metric_country = st.selectbox(
+            'Select a country for inequality metrics',
+            options=metric_countries,
+            index=metric_countries.index('Estonia') if 'Estonia' in metric_countries else 0
+        )
+
+        # Filter available years for the selected country
+        available_years_for_country = sorted(wiid_df[wiid_df['country'] == selected_metric_country]['year'].unique())
+        
+        # Time range selector for metrics
+        metric_min_year, metric_max_year = st.slider(
+            'Select time range for inequality metrics',
+            min_value=int(min(available_years_for_country)),
+            max_value=int(max(available_years_for_country)),
+            value=[int(min(available_years_for_country)), int(max(available_years_for_country))]
+        )
+
+        if metric_countries:
+            # Filter data for selected country and years
+            metrics_df = wiid_df[
+            (wiid_df['country'] == selected_metric_country) &
+            (wiid_df['year'] >= metric_min_year) &
+            (wiid_df['year'] <= metric_max_year)
+            ].copy()
+
+            # Ensure only one value per country per year
+            metrics_df = metrics_df.drop_duplicates(subset=['country', 'year'])
+
+            # Calculate upper middle to lower middle ratio
+            metrics_df['upper_middle_to_lower'] = metrics_df['q4'] / metrics_df['q2']
+
+            # Prepare data for plotting
+            metrics_long = pd.melt(
+            metrics_df,
+            id_vars=['country', 'year'],
+            value_vars=['palma', 'ratio_top20bottom20', 'upper_middle_to_lower'],
+            var_name='metric',
+            value_name='value'
+            )
+
+            # Create nicer labels for metrics
+            metrics_long['metric'] = metrics_long['metric'].map({
+            'palma': 'Palma Ratio',
+            'ratio_top20bottom20': 'Top20/Bottom20 Ratio',
+            'upper_middle_to_lower': 'Upper/Lower Middle Ratio'
+            })
+
+        # Add ratio selector
+        selected_ratios = st.multiselect(
+            'Select ratios to display',
+            ['Palma Ratio', 'Top20/Bottom20 Ratio', 'Upper/Lower Middle Ratio'],
+            ['Palma Ratio', 'Top20/Bottom20 Ratio', 'Upper/Lower Middle Ratio']
+        )
+
+        if not selected_ratios:
+            st.warning("Please select at least one ratio to display.")
+        else:
+            # Filter for selected ratios
+            metrics_long = metrics_long[metrics_long['metric'].isin(selected_ratios)]
+
+            # Create the chart with lines connecting consecutive years
+            metrics_chart = alt.Chart(metrics_long).mark_line(
+            point=True,
+            strokeWidth=2
+            ).encode(
+            x=alt.X('year:O', 
+                title='Year',
+                axis=alt.Axis(labelAngle=0)
+            ),
+            y=alt.Y('value:Q', 
+                title='Ratio Value',
+                scale=alt.Scale(zero=False)
+            ),
+            color=alt.Color('metric:N', 
+                title='Ratio Type',
+                legend=alt.Legend(
+                orient='top',
+                titleFontSize=12,
+                labelFontSize=11
+                )
+            ),
+            tooltip=['country:N', 'year:O', 'metric:N', 
+                alt.Tooltip('value:Q', format='.2f')]
+            ).properties(
+            title=f'Inequality Metrics Over Time for {selected_metric_country}',
+            height=400
+            ).interactive()
+
+            st.altair_chart(metrics_chart, use_container_width=True)
+            # Closing Section
+            st.markdown("""
+            Thank you for exploring the Inequality Dashboard. We hope the visualizations and data provided some insights into various aspects of economic inequality across different countries and time periods. Feel free to save the data visualizations you created by clicking on the three dots in the top right corner of the plots and selecting the desired format.
+
+            For more detailed information and personalized assistance, check out our Chatbot feature at the top. The Chatbot can help answer your questions and provide additional information on inequality metrics, economic indicators, and more.
+            """)
 def new_func1(gdp_deflator_year_df):
     world_map = go.Figure(data=go.Choropleth(
         locations=gdp_deflator_year_df['Country Code'],

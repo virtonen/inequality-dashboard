@@ -17,6 +17,7 @@ def about():
     - **Gini Coefficient**: Explore income inequality across different nations.
     - **Poverty Ratios**: Analyze poverty headcount ratios at $2.15 a day (2017 PPP) for various countries.
     - **Income Quintiles**: Plot income quintiles per country to show income inequality.
+    - **Income Inequality Ratios**: Compare income inequality ratios across time.
     - **Inequality Chatbot**: Chat about inequality to learn more.
     """)
     st.markdown("### 📖 About Us")  
