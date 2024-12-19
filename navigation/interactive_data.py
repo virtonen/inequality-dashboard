@@ -106,7 +106,7 @@ def show_Interactive_Data():
     - [GDP Deflator Comparison](#gdp-deflator-comparison)
     - [Visualize Your Own Variable](#visualize-your-own-variable)
     - [Gini Coefficient](#gini-coefficient)
-    - [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
+    - [Poverty Headcount Ratio](#poverty-headcount-ratio)
     - [Income Distribution by Quintiles](#income-distribution-by-quintiles)
     - [Income Inequality Ratios](#inequality-ratios)
     """)
@@ -117,7 +117,7 @@ def show_Interactive_Data():
     You probably have heard about inflation, but have you heard about the GDP Deflator? Every economy's price levels are changing differently, and the GDP Deflator is one way to represent how differently (or unequally) our economies are developing.
 
     #### What is the GDP Deflator?
-    The **GDP Deflator** is a measure of the level of prices of all new, domestically produced, final goods and services in an economy. It is calculated as follows:
+    The **GDP Deflator** is a measure of the level of prices of all new, domestically produced, final goods and services in an economy in a year. It is calculated as follows:
 
     $$
     \\text{GDP Deflator} = \\frac{\\text{Nominal GDP}}{\\text{Real GDP}} \\times 100
@@ -480,7 +480,7 @@ which contains Gini coefficients for various countries over a range of years.
     st.markdown("""
     #### About Poverty Headcount Ratio Data
     - **Source**: World Bank, Poverty and Inequality Platform.
-    - **Indicator**: Poverty headcount ratio at $2.15 a day (2017 PPP).
+    - **Indicator**: Poverty headcount ratio at $2.15 a day [(2017 PPP)](https://blogs.worldbank.org/en/opendata/how-do-2017-ppps-change-our-understanding-global-and-regional-poverty).
     - **Description**: Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. High-income economies' data are primarily from the Luxembourg Income Study database. More info at [pip.worldbank.org](https://pip.worldbank.org).
 
     #### Why is the Poverty Headcount Ratio Important?
