@@ -33,7 +33,7 @@ def get_gdp_data():
 
 @st.cache_data
 def get_gini_data():
-    """Grab GINI data from a CSV file."""
+    """Grab Gini data from a CSV file."""
     DATA_FILENAME = Path(__file__).parent.parent/'data/gini_data.csv'
     raw_gini_df = pd.read_csv(DATA_FILENAME)
 
@@ -351,8 +351,8 @@ The **Gini coefficient** is a measure of statistical dispersion intended to repr
 the income inequality or wealth inequality within a nation or a social group.
 It is the most commonly used measure of inequality. A Gini coefficient of 0
 represents perfect equality, where everyone has the same income, while a Gini
-coefficient of 100 implies perfect inequality, where one person has all the income
-and everyone else has none. Most countries have Gini coefficients between 25-60, 
+coefficient of 1 implies perfect inequality, where one person has all the income
+and everyone else has none. Most countries have Gini coefficients between 0.25-0.60, 
 with lower values indicating more equality and higher values indicating more inequality.
 
 ## Relation to the Lorenz Curve
@@ -385,7 +385,7 @@ where:
 - $x_i$ and $x_j$ are individual values.
 
 This dashboard reads Gini coefficient data from a CSV file obtained from the [World Bank Open Data](https://data.worldbank.org/),
-which contains Gini coefficients for various countries over a range of years.
+which contains Gini Indexes for various countries over a range of years. The Gini index is the Gini coefficient expressed as a percentage, and is equal to the Gini coefficient multiplied by 100
 """)
 
     st.subheader("Data: ")
@@ -461,7 +461,7 @@ which contains Gini coefficients for various countries over a range of years.
                 display_gini = f'{last_gini:.2f}'
 
             st.metric(
-                label=f'{country} GINI',
+                label=f'{country} Gini',
                 value=display_gini,
                 delta=growth,
                 delta_color=delta_color
@@ -486,7 +486,7 @@ which contains Gini coefficients for various countries over a range of years.
     - **Economic Development**: The GDP Deflator measures price changes in an economy, but it does not account for how these changes affect the poorest segments of society. The Poverty Headcount Ratio provides insight into whether economic growth is inclusive and benefits the most vulnerable populations.
     - **Policy Relevance**: Policymakers can use the Poverty Headcount Ratio to design targeted interventions aimed at poverty reduction, ensuring that economic policies are inclusive and equitable.
 
-    This metric is essential for understanding the depth and breadth of poverty within a country, making it a vital tool for assessing the effectiveness of poverty alleviation programs and economic policies.
+    This metric is essential for understanding the breadth of poverty within a country, making it a vital tool for assessing the effectiveness of poverty alleviation programs and economic policies.
     """)
 
     # Filter years and countries for poverty data
