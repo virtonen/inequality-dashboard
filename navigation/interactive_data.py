@@ -437,11 +437,11 @@ which contains Gini coefficients for various countries over a range of years.
     first_year = gini_df[gini_df['Year'] == from_year]
     last_year = gini_df[gini_df['Year'] == to_year]
 
-    st.header(f'Change in Gini from {from_year} to {to_year}', divider='gray')
+    st.header(f'Gini in {to_year}', divider='gray')
 
     st.markdown("""
     **Explanation:**  
-    The metrics below display the Gini coefficients for the selected countries in the chosen year. Each metric shows the current Gini value and the change from the first year in the selected range, indicating whether inequality has increased or decreased.
+    The metrics below display the Gini coefficients for the selected countries in the chosen final year. Under the Gini values, the number in green shows the change from the first year in the selected range, indicating whether inequality (as measured by Gini) has increased or decreased.
     """)
 
     cols = st.columns(4)
