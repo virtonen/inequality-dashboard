@@ -788,10 +788,15 @@ which contains Gini Indexes for various countries over a range of years. The Gin
 
             st.altair_chart(metrics_chart, use_container_width=True)
             # Closing Section
+            st.header('Thank you!', divider='gray')
             st.markdown("""
-            Thank you for exploring the Inequality Dashboard. We hope the visualizations and data provided some insights into various aspects of economic inequality across different countries and time periods. Feel free to save the data visualizations you created by clicking on the three dots in the top right corner of the plots and selecting the desired format.
+            ### Thank You for Exploring the Inequality Dashboard
 
-            For more detailed information and personalized assistance, check out our Chatbot feature at the top. The Chatbot can help answer your questions and provide additional information on inequality metrics, economic indicators, and more.
+            We hope the visualizations and data provided some insights into various aspects of economic inequality across different countries and time periods.
+
+            **Reminder**: Feel free to save the data visualizations you created by clicking on the three dots in the top right corner of the plots and selecting the desired format.
+
+            For more detailed information and personalized assistance, check out our **Chatbot** feature at the top. The Chatbot can help answer your questions and provide additional information on inequality metrics, economic indicators, and more.
             """)
 def new_func1(gdp_deflator_year_df):
     world_map = go.Figure(data=go.Choropleth(
