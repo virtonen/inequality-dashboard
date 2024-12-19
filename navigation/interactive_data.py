@@ -221,6 +221,36 @@ def show_Interactive_Data():
 
     # Create the choropleth map
     world_map = new_func1(gdp_deflator_year_df)
+    # Create a base dataframe with all country codes and zero values for GDP Deflator
+    base_df = pd.DataFrame({
+        'Country Code': gdp_deflator_df['Country Code'].unique(),
+        'Country Name': gdp_deflator_df['Country Name'].unique(),
+        'GDP Deflator': [0] * len(gdp_deflator_df['Country Code'].unique())
+    })
+
+    # If countries are selected, update the values for those countries
+    if selected_countries:
+        gdp_deflator_year_df = gdp_deflator_df[
+            (gdp_deflator_df['Year'] == selected_year) &
+            (gdp_deflator_df['Country Name'].isin(selected_countries))
+        ]
+        # Update base_df with actual values where available
+        for idx, row in gdp_deflator_year_df.iterrows():
+            base_df.loc[base_df['Country Code'] == row['Country Code'], 'GDP Deflator'] = row['GDP Deflator']
+
+    # Create the map using the base_df instead of filtered data
+    world_map = go.Figure(data=go.Choropleth(
+        locations=base_df['Country Code'],
+        z=base_df['GDP Deflator'],
+        text=base_df['Country Name'],
+        colorscale='RdBu',
+        zmid=0,
+        autocolorscale=False,
+        reversescale=True,
+        marker_line_color='darkgray',
+        marker_line_width=0.5,
+        colorbar_title="GDP Deflator (%)"
+    ))
 
     # Update the layout for the map
     world_map.update_layout(
