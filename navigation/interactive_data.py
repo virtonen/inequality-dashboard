@@ -108,7 +108,7 @@ def show_Interactive_Data():
     - [Gini Coefficient](#gini-coefficient)
     - [Poverty Headcount Ratio](#poverty-headcount-ratio)
     - [Income Distribution by Quintiles](#income-distribution-by-quintiles)
-    - [Income Inequality Ratios](#inequality-ratios)
+    - [Income Inequality Ratios](#income-inequality-ratios)
     """)
     st.header('GDP Deflator Comparison', divider='gray')
     st.markdown("""
