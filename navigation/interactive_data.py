@@ -384,9 +384,21 @@ where:
 - $\mu$ is the mean of the distribution.
 - $x_i$ and $x_j$ are individual values.
 
+## Limitations of the Gini Coefficient
+
+- **Lack of Detail on Sources of Inequality**: Does not identify whether inequality stems from wages, wealth, education, or other factors.
+- **Insensitive to Distributional Extremes**: Struggles to capture changes at the very top or bottom of the income spectrum.
+- **Ignores Population Structure**: Does not account for demographic differences like age or household composition.
+- **No Clear Threshold**: Does not define what constitutes "acceptable" inequality levels.
+- **Static View**: Represents inequality at a single point in time, ignoring income mobility over time.
+- **Data Dependency**: Results are influenced by the accuracy and completeness of income or wealth data.
+- **Focus on Monetary Metrics**: Excludes non-monetary dimensions like health, education, or access to resources.
+- **Disregards Absolute Well-being**: Two regions with the same Gini coefficient may have vastly different living standards due to differences in average income.
+
 This dashboard reads Gini coefficient data from a CSV file obtained from the [World Bank Open Data](https://data.worldbank.org/),
-which contains Gini Indexes for various countries over a range of years. The Gini index is the Gini coefficient expressed as a percentage, and is equal to the Gini coefficient multiplied by 100
-""")
+which contains Gini Indexes for various countries over a range of years. The Gini index is the Gini coefficient expressed as a percentage, and is equal to the Gini coefficient multiplied by 100.
+
+                """)
 
     st.subheader("Data: ")
     st.write(gini_df)
@@ -486,6 +498,14 @@ which contains Gini Indexes for various countries over a range of years. The Gin
     - **Economic Development**: The GDP Deflator measures price changes in an economy, but it does not account for how these changes affect the poorest segments of society. The Poverty Headcount Ratio provides insight into whether economic growth is inclusive and benefits the most vulnerable populations.
     - **Policy Relevance**: Policymakers can use the Poverty Headcount Ratio to design targeted interventions aimed at poverty reduction, ensuring that economic policies are inclusive and equitable.
 
+    #### Limitations of the Poverty Headcount Ratio
+    - **Simplistic Threshold**: Focuses only on those below the poverty line, ignoring people just above it who may still face significant hardships.
+    - **Ignores Depth of Poverty**: Does not capture how far below the poverty line individuals are, missing the severity of poverty for the most deprived.
+    - **Static Measure**: Provides a snapshot of poverty at one point in time, failing to reflect changes in individual or household circumstances over time.
+    - **Relies on Arbitrary Thresholds**: The poverty line ($2.15 a day, 2017 PPP) may not account for regional cost-of-living differences or varying definitions of basic needs.
+    - **Limited Multidimensional Insights**: Focuses solely on income, overlooking other aspects of poverty like access to healthcare, education, or housing.
+    - **Data Quality and Comparability**: Dependent on the accuracy of household surveys and consistency across countries, which can vary significantly.
+
     This metric is essential for understanding the breadth of poverty within a country, making it a vital tool for assessing the effectiveness of poverty alleviation programs and economic policies.
     """)
 
@@ -546,8 +566,8 @@ which contains Gini Indexes for various countries over a range of years. The Gin
 
     #### Advantages over Other Inequality Measures:
     - **More Granular than Gini**: While the Gini coefficient provides a single number, quintile shares show exactly where in the distribution inequality occurs.
-    - **Better than Poverty Headcount**: Instead of just showing how many are below a threshold, quintiles reveal the entire distribution of income.
-    - **Policy Relevance**: Helps identify which segments of society might need targeted economic interventions.
+    - **More detailed than Poverty Headcount**: Instead of just showing how many are below a threshold, quintiles reveal the entire distribution of income.
+    - **Policy Relevance**: Offers a detailed view of income or wealth distribution across different segments of society, enabling the design of more effective redistributive policies.
 
     #### Reading the Visualization:
     - Each bar represents 100% of a country's income.
@@ -555,7 +575,7 @@ which contains Gini Indexes for various countries over a range of years. The Gin
     - In a perfectly equal society, each quintile would receive 20% of total income.
     - Larger top quintile shares indicate greater inequality.
 
-    Note: If your selected country doesn't appear in the plot, data for that country-year combination is not available in the World Income Inequality Database (WIID).
+    Note: If your selected country doesn't appear in the plot, data for that country-year combination is not available in the WIID.
     """)
 
     # First get available years
