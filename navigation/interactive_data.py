@@ -101,6 +101,7 @@ def get_wiid_data():
 
 def show_Interactive_Data():
     st.markdown("<h2 style='text-align: center;'>📊 Interactive Data Page</h2>", unsafe_allow_html=True)
+    st.divider()
     st.header('Table of Contents')
     st.markdown("""
     - [GDP Deflator Comparison](#gdp-deflator-comparison)
