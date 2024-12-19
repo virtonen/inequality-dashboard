@@ -117,7 +117,7 @@ def show_Interactive_Data():
     You probably have heard about inflation, but have you heard about the GDP Deflator? Every economy's price levels are changing differently, and the GDP Deflator is one way to represent how differently (or unequally) our economies are developing.
 
     #### What is the GDP Deflator?
-    The **GDP Deflator** is a measure of the level of prices of all new, domestically produced, final goods and services in an economy in a year. It is calculated as follows:
+    A [GDP deflator](https://study.com/academy/lesson/gdp-deflator-definition-formula-example.html#:~:text=A%20GDP%20deflator%20is%20a%20tool%20that%20is%20used%20to,services%20produced%20in%20an%20economy.) is a tool used to measure price changes over time to compare the current prices with historical prices accurately. It is calculated as follows:
 
     $$
     \\text{GDP Deflator} = \\frac{\\text{Nominal GDP}}{\\text{Real GDP}} \\times 100
