@@ -664,9 +664,7 @@ which contains Gini Indexes for various countries over a range of years. The Gin
             order=alt.Order('Quintile:N', sort='ascending'),
             tooltip=[
                 alt.Tooltip('country:N', title='Country'),
-                alt.Tooltip('year:Q', title='Year'),
-                alt.Tooltip('Quintile:N', title='Quintile'),
-                alt.Tooltip('Income Share:Q', title='Share', format='.1f')
+                alt.Tooltip('Quintile:N', title='Quintile')
             ]
         ).properties(
             title=f'Income Distribution by Quintile ({selected_year})',
