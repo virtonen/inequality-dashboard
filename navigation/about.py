@@ -3,7 +3,7 @@ import streamlit as st
 def about():    
     # Welcome section
     st.markdown("### Welcome!")
-       st.markdown("""
+    st.markdown("""
     We are so glad to have you here! This dashboard is designed to help you understanding global economic trends in an interactive and engaging way. 
     Dive into topics like **GDP Trends**, **Income Inequality**, **Poverty Ratios**, and **Income Distributions**. Use the buttons above to explore 
     our visualizations!
