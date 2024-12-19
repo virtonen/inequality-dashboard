@@ -100,12 +100,13 @@ def get_wiid_data():
 # PAGE STARTS HERE
 
 def show_Interactive_Data():
+    st.markdown("<h2 style='text-align: center;'>📊 Interactive Data Page</h2>", unsafe_allow_html=True)
     st.header('Table of Contents')
     st.markdown("""
     - [GDP Deflator Comparison](#gdp-deflator-comparison)
     - [Visualize Your Own Variable](#visualize-your-own-variable)
     - [Gini Coefficient](#gini-coefficient)
-    - [Poverty Headcount Ratio over time](#poverty-headcount-ratio-over-time)
+    - [Poverty Headcount Ratio](#poverty-headcount-ratio)
     - [Income Distribution by Quintiles](#income-distribution-by-quintiles)
     - [Income Inequality Ratios](#inequality-ratios)
     """)
@@ -116,6 +117,7 @@ def show_Interactive_Data():
     You probably have heard about inflation, but have you heard about the GDP Deflator? Every economy's price levels are changing differently, and the GDP Deflator is one way to represent how differently (or unequally) our economies are developing.
 
     #### What is the GDP Deflator?
+    The **GDP Deflator** is a measure of the level of prices of all new, domestically produced, final goods and services in an economy in a year. It is calculated as follows:
     A [GDP deflator](https://study.com/academy/lesson/gdp-deflator-definition-formula-example.html#:~:text=A%20GDP%20deflator%20is%20a%20tool%20that%20is%20used%20to,services%20produced%20in%20an%20economy.) is a tool used to measure price changes over time to compare the current prices with historical prices accurately. It is calculated as follows:
 
     $$
@@ -221,6 +223,36 @@ def show_Interactive_Data():
 
     # Create the choropleth map
     world_map = new_func1(gdp_deflator_year_df)
+    # Create a base dataframe with all country codes and zero values for GDP Deflator
+    base_df = pd.DataFrame({
+        'Country Code': gdp_deflator_df['Country Code'].unique(),
+        'Country Name': gdp_deflator_df['Country Name'].unique(),
+        'GDP Deflator': [0] * len(gdp_deflator_df['Country Code'].unique())
+    })
+
+    # If countries are selected, update the values for those countries
+    if selected_countries:
+        gdp_deflator_year_df = gdp_deflator_df[
+            (gdp_deflator_df['Year'] == selected_year) &
+            (gdp_deflator_df['Country Name'].isin(selected_countries))
+        ]
+        # Update base_df with actual values where available
+        for idx, row in gdp_deflator_year_df.iterrows():
+            base_df.loc[base_df['Country Code'] == row['Country Code'], 'GDP Deflator'] = row['GDP Deflator']
+
+    # Create the map using the base_df instead of filtered data
+    world_map = go.Figure(data=go.Choropleth(
+        locations=base_df['Country Code'],
+        z=base_df['GDP Deflator'],
+        text=base_df['Country Name'],
+        colorscale='RdBu',
+        zmid=0,
+        autocolorscale=False,
+        reversescale=True,
+        marker_line_color='darkgray',
+        marker_line_width=0.5,
+        colorbar_title="GDP Deflator (%)"
+    ))
 
     # Update the layout for the map
     world_map.update_layout(
@@ -371,7 +403,7 @@ which contains Gini coefficients for various countries over a range of years.
         'Which years are you interested in?',
         min_value=min_value,
         max_value=max_value,
-        value=[min_value, max_value])
+        value=[2011, 2016] if min_value <= 2011 <= max_value and min_value <= 2016 <= max_value else [min_value, max_value])
 
     countries = gini_df['Country Name'].unique()
 
@@ -381,7 +413,7 @@ which contains Gini coefficients for various countries over a range of years.
     selected_countries = st.multiselect(
         'Which countries would you like to view?',
         countries,
-        ['Germany', 'Brazil', 'Norway', 'South Africa', 'United States', 'Estonia'])
+        ['Germany', 'Brazil', 'Norway', 'United States', 'Estonia'])
 
     # Filter the data
     filtered_gini_df = gini_df[
@@ -449,7 +481,7 @@ which contains Gini coefficients for various countries over a range of years.
     st.markdown("""
     #### About Poverty Headcount Ratio Data
     - **Source**: World Bank, Poverty and Inequality Platform.
-    - **Indicator**: Poverty headcount ratio at $2.15 a day (2017 PPP).
+    - **Indicator**: Poverty headcount ratio at $2.15 a day [(2017 PPP)](https://blogs.worldbank.org/en/opendata/how-do-2017-ppps-change-our-understanding-global-and-regional-poverty).
     - **Description**: Data are based on primary household survey data obtained from government statistical agencies and World Bank country departments. High-income economies' data are primarily from the Luxembourg Income Study database. More info at [pip.worldbank.org](https://pip.worldbank.org).
 
     #### Why is the Poverty Headcount Ratio Important?

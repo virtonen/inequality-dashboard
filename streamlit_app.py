@@ -19,14 +19,52 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Navigation buttons with unique keys
 def show_navigation_buttons():
-    col1, col2, col3 = st.columns(3)  # Add a third column for the new button
+    col1, col2, col3 = st.columns(3)
+    
+    # Define button styles
+    default_style = """
+        <style>
+        div.stButton > button {
+            background-color: #ffffff;
+            color: #000000;
+            width: 100%;
+        }
+        </style>
+    """
+    
+    active_style = """
+        <style>
+        div.stButton > button {
+            background-color: #0066cc;
+            color: #ffffff;
+            width: 100%;
+        }
+        </style>
+    """
+    
+    # About button
+    if st.session_state.page == "About":
+        col1.markdown(active_style, unsafe_allow_html=True)
+    else:
+        col1.markdown(default_style, unsafe_allow_html=True)
     if col1.button("🔍 About", key="about_btn"):
         st.session_state.page = "About"
+    
+    # Interactive Data button
+    if st.session_state.page == "Interactive Data":
+        col2.markdown(active_style, unsafe_allow_html=True)
+    else:
+        col2.markdown(default_style, unsafe_allow_html=True)
     if col2.button("📊 Interactive Data", key="Interactive_Data_btn"):
         st.session_state.page = "Interactive Data"
-    if col3.button("💬 Chatbot", key="chatbot_btn"):  # Add the new button
+    
+    # Chatbot button
+    if st.session_state.page == "Chatbot":
+        col3.markdown(active_style, unsafe_allow_html=True)
+    else:
+        col3.markdown(default_style, unsafe_allow_html=True)
+    if col3.button("💬 Chatbot", key="chatbot_btn"):
         st.session_state.page = "Chatbot"
    
 # Initialize session state for page navigation
