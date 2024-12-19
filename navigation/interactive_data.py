@@ -137,11 +137,10 @@ def show_Interactive_Data():
 
     This dashboard allows you to explore the GDP Deflator data across different countries and years, providing insights into how inflation has evolved over time. Use the interactive tools to filter the data by year and country, and visualize the trends through dynamic charts and maps.
 
-    More inequality measures follow in the next sections.
     """)
 
     # Preview the GDP Deflator dataset
-    st.subheader("Data: ")
+    st.subheader("Data")
     st.markdown("""
     #### Data Source
     The data presented here is sourced from the [World Bank](https://databank.worldbank.org/indicator/SP.POP.TOTL/1ff4a498/Popular-Indicators). The World Development Indicators (WDI) is the primary World Bank collection of development indicators, compiled from officially recognized international sources. It presents the most current and accurate global development data available, and includes national, regional, and global estimates.
