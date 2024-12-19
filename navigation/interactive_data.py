@@ -685,11 +685,14 @@ which contains Gini coefficients for various countries over a range of years.
         available_years_for_country = sorted(wiid_df[wiid_df['country'] == selected_metric_country]['year'].unique())
         
         # Time range selector for metrics
+        default_min_year = 2005 if 2005 in available_years_for_country else min(available_years_for_country)
+        default_max_year = 2021 if 2021 in available_years_for_country else max(available_years_for_country)
+        
         metric_min_year, metric_max_year = st.slider(
             'Select time range for inequality metrics',
             min_value=int(min(available_years_for_country)),
             max_value=int(max(available_years_for_country)),
-            value=[int(min(available_years_for_country)), int(max(available_years_for_country))]
+            value=[int(default_min_year), int(default_max_year)]
         )
 
         if metric_countries:
