@@ -630,7 +630,7 @@ which contains Gini Indexes for various countries over a range of years. The Gin
             value_vars=quintile_cols,
             var_name='Quintile',
             value_name='Income Share'
-        )
+        ).groupby(['country', 'Quintile'], as_index=False).sum()
 
         # Create more readable quintile labels
         melted_wiid_df['Quintile'] = pd.Categorical(
