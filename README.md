@@ -1,4 +1,4 @@
-# :earth_americas: Global Inequality dashboard template
+# :earth_americas: Global Inequality dashboard
 
 A simple Streamlit app exploring Gini, Poverty Headcount Ratio, and Income Distribution data across countries. [Explore the Dashboard](https://inequality-dashboard.streamlit.app/)
 
